@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 import { calculatePrice } from '@/lib/price'
-
-const prisma = new PrismaClient()
 
 const schema = z.object({
   productSlug: z.string(),
@@ -12,6 +10,7 @@ const schema = z.object({
   widthMm: z.number().positive(),
   depthMm: z.number().positive(),
 })
+// heightMm is not used in price calculation (affects installation only)
 
 export async function POST(req: NextRequest) {
   const body = await req.json()

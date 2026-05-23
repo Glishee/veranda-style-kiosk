@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 import { Resend } from 'resend'
 
-const prisma = new PrismaClient()
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 const schema = z.object({
@@ -14,7 +13,7 @@ const schema = z.object({
   widthMm: z.number().positive(),
   depthMm: z.number().positive(),
   heightMm: z.number().positive(),
-  estimatedEur: z.number().positive(),
+  estimatedEur: z.number().nonnegative(),
   name: z.string().min(1, 'name is required'),
   phone: z.string().min(1, 'phone is required'),
   email: z.string().email().optional().or(z.literal('')),
@@ -80,12 +79,16 @@ Language: ${data.lang}
 Lead ID: ${lead.id}
 `.trim()
 
-  await resend.emails.send({
-    from: 'kiosk@veranda-style.com',
-    to: process.env.NOTIFICATION_EMAIL!,
-    subject: `New lead — ${data.productSlug} — ${data.name} — ${data.city}`,
-    text: emailBody,
-  })
+  try {
+    await resend.emails.send({
+      from: 'kiosk@veranda-style.com',
+      to: process.env.NOTIFICATION_EMAIL!,
+      subject: `New lead — ${data.productSlug} — ${data.name} — ${data.city}`,
+      text: emailBody,
+    })
+  } catch {
+    // Email delivery failure should not block lead submission
+  }
 
   return NextResponse.json({ success: true, leadId: lead.id }, { status: 201 })
 }

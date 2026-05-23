@@ -20,7 +20,10 @@ export function SuccessScreen() {
       </div>
 
       <div className="flex flex-col gap-3 w-full max-w-xs">
-        <button className="bg-green-700 text-white py-4 text-[11px] font-bold tracking-widest uppercase">
+        <button
+          disabled
+          className="bg-green-700 text-white py-4 text-[11px] font-bold tracking-widest uppercase opacity-50 cursor-not-allowed"
+        >
           💬 Continue on WhatsApp
         </button>
         <button

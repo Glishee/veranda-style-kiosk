@@ -27,6 +27,7 @@ const STEP_LABELS = [
 export function KioskClient({ products }: Props) {
   const { state, dispatch } = useKiosk()
   const [submitError, setSubmitError] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const handleIdle = useCallback(() => dispatch({ type: 'RESET' }), [dispatch])
   useIdleTimer({ timeoutMs: 90_000, onIdle: handleIdle, enabled: state.step > 0 })
 
@@ -44,6 +45,8 @@ export function KioskClient({ products }: Props) {
     if (state.step === 7) {
       const { name, phone, city, postcode } = state.contact
       if (!name || !phone || !city || !postcode) return
+      if (isSubmitting) return
+      setIsSubmitting(true)
       setSubmitError(false)
       const res = await fetch('/api/leads', {
         method: 'POST',
@@ -61,6 +64,7 @@ export function KioskClient({ products }: Props) {
           lang: state.lang,
         }),
       })
+      setIsSubmitting(false)
       if (!res.ok) {
         setSubmitError(true)
         return
@@ -130,7 +134,7 @@ export function KioskClient({ products }: Props) {
               )}
               <button
                 onClick={handleNext}
-                disabled={!canAdvance()}
+                disabled={!canAdvance() || isSubmitting}
                 className={`flex-1 h-11 text-[11px] font-bold tracking-widest uppercase transition-all ${
                   canAdvance()
                     ? state.step === 7 ? 'bg-green-800 text-white' : 'bg-gray-900 text-white'

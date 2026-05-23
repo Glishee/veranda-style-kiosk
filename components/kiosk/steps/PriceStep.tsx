@@ -9,8 +9,13 @@ export function PriceStep() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (!state.productSlug || !state.roofSlug || !state.widthMm || !state.depthMm) return
+    if (!state.productSlug || !state.roofSlug || !state.widthMm || !state.depthMm) {
+      setLoading(false)
+      setError(true)
+      return
+    }
     setLoading(true)
     fetch('/api/price', {
       method: 'POST',
@@ -23,8 +28,11 @@ export function PriceStep() {
         depthMm: state.depthMm,
       }),
     })
-      .then(r => r.json())
-      .then(d => {
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`)
+        return r.json()
+      })
+      .then((d: PriceResponse) => {
         setData(d)
         dispatch({ type: 'SET_ESTIMATED', price: d.estimated })
       })
