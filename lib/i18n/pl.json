@@ -1,55 +1,73 @@
 {
-  "_note": "TODO: translate all strings to Polish",
   "splash": {
-    "tagline": "Premium Outdoor Structures",
-    "tap": "Touch anywhere to start"
+    "tagline": "Ekskluzywne Konstrukcje Zewnętrzne",
+    "tap": "Dotknij, aby rozpocząć"
   },
   "nav": {
     "brand": "Veranda Style"
   },
   "steps": {
-    "step": "Step {current} of {total}",
-    "back": "Back",
-    "continue": "Continue",
-    "sendQuote": "Send & Get Quote"
+    "back": "← Wstecz",
+    "continue": "Dalej →",
+    "sendQuote": "Wyślij i uzyskaj wycenę"
   },
-  "step1": { "title": "What would you like to configure?" },
-  "step2": { "title": "How will it be installed?" },
-  "step3": { "title": "Choose roof material" },
-  "step4": { "title": "Add options", "optional": "optional" },
+  "stepLabels": [
+    "",
+    "Krok 1 z 7 — Wybór produktu",
+    "Krok 2 z 7 — Typ konstrukcji",
+    "Krok 3 z 7 — Materiał dachu",
+    "Krok 4 z 7 — Dodatkowe opcje",
+    "Krok 5 z 7 — Wymiary",
+    "Krok 6 z 7 — Szacunkowa cena",
+    "Krok 7 z 7 — Twoje dane"
+  ],
+  "step1": { "title": "Co chcesz skonfigurować?" },
+  "step2": { "title": "Jak będzie zamontowane?" },
+  "step3": { "title": "Wybierz materiał dachu" },
+  "step4": {
+    "title": "Dodaj opcje",
+    "optional": "opcjonalne — wybierz dowolne",
+    "noOptions": "Brak dodatkowych opcji dla tego produktu."
+  },
   "step5": {
-    "title": "Enter dimensions",
-    "width": "Width",
-    "depth": "Depth",
-    "height": "Height",
-    "unit": "mm",
-    "hint": "All values in millimetres (mm)"
+    "title": "Wprowadź wymiary",
+    "width": "Szerokość",
+    "depth": "Głębokość",
+    "height": "Wysokość",
+    "tapHint": "Dotknij pole, aby wpisać wartość",
+    "hint": "Wszystkie wartości w milimetrach (mm)"
   },
   "step6": {
-    "title": "Your estimated price",
-    "estimated": "Estimated total",
-    "range": "Indicative range",
-    "disclaimer": "Indicative price only. Final cost will be confirmed after reviewing photos, exact measurements and installation site."
+    "title": "Szacunkowa cena",
+    "estimated": "Szacunkowa suma",
+    "range": "Zakres",
+    "disclaimer": "Cena orientacyjna. Ostateczny koszt zostanie potwierdzony po weryfikacji zdjęć, dokładnych pomiarów i miejsca montażu.",
+    "calculating": "Obliczanie...",
+    "error": "Nie można obliczyć ceny."
   },
   "step7": {
-    "title": "Leave your contact",
-    "name": "Full Name",
-    "phone": "Phone",
+    "title": "Podaj dane kontaktowe",
+    "name": "Imię i nazwisko",
+    "phone": "Telefon",
     "email": "E-mail",
-    "city": "City",
-    "postcode": "Postcode",
-    "comment": "Comment",
-    "optional": "optional"
+    "city": "Miasto",
+    "postcode": "Kod pocztowy",
+    "comment": "Komentarz",
+    "optional": "opcjonalne"
   },
   "success": {
-    "title": "Request sent!",
-    "body": "Thank you. We'll prepare your quote and contact you within 24 hours.",
-    "whatsapp": "Continue on WhatsApp",
-    "restart": "Start over"
+    "title": "Zapytanie wysłane!",
+    "body": "Dziękujemy. Przygotujemy spersonalizowaną wycenę i skontaktujemy się z Tobą w ciągu 24 godzin.",
+    "phone": "Kontynuuj na telefonie",
+    "whatsapp": "💬 Kontynuuj na WhatsApp",
+    "restart": "← Zacznij od nowa"
   },
   "price": {
-    "baseStructure": "Base structure",
-    "material": "Material",
-    "options": "Options"
+    "baseStructure": "Podstawa",
+    "material": "Materiał",
+    "options": "Opcje"
+  },
+  "general": {
+    "submitError": "Błąd przesyłania. Spróbuj ponownie."
   }
 }

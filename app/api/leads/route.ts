@@ -81,7 +81,7 @@ Lead ID: ${lead.id}
 
   try {
     await resend.emails.send({
-      from: 'kiosk@veranda-style.com',
+      from: 'Veranda Style Kiosk <onboarding@resend.dev>',
       to: process.env.NOTIFICATION_EMAIL!,
       subject: `New lead — ${data.productSlug} — ${data.name} — ${data.city}`,
       text: emailBody,

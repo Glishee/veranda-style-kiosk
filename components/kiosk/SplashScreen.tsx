@@ -1,11 +1,13 @@
 'use client'
 import { useKiosk } from '@/context/KioskContext'
+import { useT } from '@/hooks/useT'
 import type { Lang } from '@/lib/types'
 
 const LANGS: Lang[] = ['en', 'pl', 'de']
 
 export function SplashScreen() {
   const { state, dispatch } = useKiosk()
+  const t = useT()
 
   return (
     <div
@@ -38,10 +40,10 @@ export function SplashScreen() {
           Veranda Style
         </h1>
         <p className="text-[10px] tracking-[4px] text-white/30 uppercase mb-12">
-          Premium Outdoor Structures
+          {t.splash.tagline}
         </p>
         <p className="text-[11px] tracking-[3px] text-white/20 uppercase animate-pulse">
-          ▸ &nbsp; Touch anywhere to start &nbsp; ◂
+          ▸ &nbsp; {t.splash.tap} &nbsp; ◂
         </p>
       </div>
     </div>

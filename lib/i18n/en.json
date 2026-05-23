@@ -7,28 +7,43 @@
     "brand": "Veranda Style"
   },
   "steps": {
-    "step": "Step {current} of {total}",
-    "back": "Back",
-    "continue": "Continue",
+    "back": "← Back",
+    "continue": "Continue →",
     "sendQuote": "Send & Get Quote"
   },
+  "stepLabels": [
+    "",
+    "Step 1 of 7 — Choose product",
+    "Step 2 of 7 — Structure type",
+    "Step 3 of 7 — Roof material",
+    "Step 4 of 7 — Extra options",
+    "Step 5 of 7 — Dimensions",
+    "Step 6 of 7 — Estimated price",
+    "Step 7 of 7 — Your contact"
+  ],
   "step1": { "title": "What would you like to configure?" },
   "step2": { "title": "How will it be installed?" },
   "step3": { "title": "Choose roof material" },
-  "step4": { "title": "Add options", "optional": "optional" },
+  "step4": {
+    "title": "Add options",
+    "optional": "optional — select any that apply",
+    "noOptions": "No additional options for this product."
+  },
   "step5": {
     "title": "Enter dimensions",
     "width": "Width",
     "depth": "Depth",
     "height": "Height",
-    "unit": "mm",
+    "tapHint": "Tap a field to enter value",
     "hint": "All values in millimetres (mm)"
   },
   "step6": {
     "title": "Your estimated price",
     "estimated": "Estimated total",
-    "range": "Indicative range",
-    "disclaimer": "Indicative price only. Final cost will be confirmed after reviewing photos, exact measurements and installation site."
+    "range": "Range",
+    "disclaimer": "Indicative price only. Final cost will be confirmed after reviewing photos, exact measurements and installation site.",
+    "calculating": "Calculating...",
+    "error": "Could not calculate price."
   },
   "step7": {
     "title": "Leave your contact",
@@ -42,13 +57,17 @@
   },
   "success": {
     "title": "Request sent!",
-    "body": "Thank you. We'll prepare your quote and contact you within 24 hours.",
-    "whatsapp": "Continue on WhatsApp",
-    "restart": "Start over"
+    "body": "Thank you. We'll prepare your personalised quote and contact you within 24 hours.",
+    "phone": "Continue on your phone",
+    "whatsapp": "💬 Continue on WhatsApp",
+    "restart": "← Start over"
   },
   "price": {
     "baseStructure": "Base structure",
     "material": "Material",
     "options": "Options"
+  },
+  "general": {
+    "submitError": "Failed to submit. Please try again."
   }
 }

@@ -1,6 +1,7 @@
 'use client'
 import { useKiosk } from '@/context/KioskContext'
-import type { ProductRow, Lang } from '@/lib/types'
+import { useT } from '@/hooks/useT'
+import type { ProductRow } from '@/lib/types'
 
 const ICONS: Record<string, string> = {
   canopy: '🏗', 'winter-garden': '🏡', pergola: '🌿',
@@ -11,15 +12,14 @@ interface Props { products: ProductRow[] }
 
 export function ProductGrid({ products }: Props) {
   const { state, dispatch } = useKiosk()
+  const t = useT()
 
   return (
     <div className="flex-1 overflow-y-auto p-5">
-      <h2 className="text-base font-bold text-gray-900 mb-4">
-        What would you like to configure?
-      </h2>
+      <h2 className="text-base font-bold text-gray-900 mb-4">{t.step1.title}</h2>
       <div className="grid grid-cols-2 gap-3">
         {products.map(p => {
-          const t = p.translations[state.lang]
+          const tr = p.translations[state.lang]
           return (
             <button
               key={p.slug}
@@ -30,7 +30,7 @@ export function ProductGrid({ products }: Props) {
             >
               <div className="text-2xl mb-2">{ICONS[p.slug] ?? '🏠'}</div>
               <p className="text-[10px] font-bold tracking-wide text-gray-800 uppercase leading-tight">
-                {t?.name ?? p.slug}
+                {tr?.name ?? p.slug}
               </p>
             </button>
           )

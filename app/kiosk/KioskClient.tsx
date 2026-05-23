@@ -13,19 +13,14 @@ import { DimensionsStep } from '@/components/kiosk/steps/DimensionsStep'
 import { PriceStep } from '@/components/kiosk/steps/PriceStep'
 import { ContactStep } from '@/components/kiosk/steps/ContactStep'
 import { SuccessScreen } from '@/components/kiosk/SuccessScreen'
+import { useT } from '@/hooks/useT'
 import type { ProductRow } from '@/lib/types'
 
 interface Props { products: ProductRow[] }
 
-const STEP_LABELS = [
-  '', 'Step 1 of 7 — Choose product', 'Step 2 of 7 — Structure type',
-  'Step 3 of 7 — Roof material', 'Step 4 of 7 — Extra options',
-  'Step 5 of 7 — Dimensions', 'Step 6 of 7 — Estimated price',
-  'Step 7 of 7 — Your contact',
-]
-
 export function KioskClient({ products }: Props) {
   const { state, dispatch } = useKiosk()
+  const t = useT()
   const [submitError, setSubmitError] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const handleIdle = useCallback(() => dispatch({ type: 'RESET' }), [dispatch])
@@ -109,7 +104,7 @@ export function KioskClient({ products }: Props) {
         </div>
 
         {state.step >= 1 && state.step <= 7 && (
-          <StepProgress currentStep={state.step} label={STEP_LABELS[state.step]} />
+          <StepProgress currentStep={state.step} label={t.stepLabels[state.step] ?? ''} />
         )}
 
         <div className="flex-1 overflow-hidden flex flex-col">
@@ -120,7 +115,7 @@ export function KioskClient({ products }: Props) {
           <div className="bg-white border-t border-gray-200 px-5 py-3 flex flex-col gap-2 flex-shrink-0">
             {submitError && (
               <p className="text-red-500 text-[10px] text-center mb-2">
-                Failed to submit. Please try again.
+                {t.general.submitError}
               </p>
             )}
             <div className="flex gap-2">
@@ -129,7 +124,7 @@ export function KioskClient({ products }: Props) {
                   onClick={() => dispatch({ type: 'PREV_STEP' })}
                   className="border border-gray-200 text-gray-500 px-5 h-11 text-[10px] tracking-widest uppercase"
                 >
-                  ← Back
+                  {t.steps.back}
                 </button>
               )}
               <button
@@ -141,7 +136,7 @@ export function KioskClient({ products }: Props) {
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
               >
-                {state.step === 7 ? 'Send & Get Quote' : 'Continue →'}
+                {state.step === 7 ? t.steps.sendQuote : t.steps.continue}
               </button>
             </div>
           </div>

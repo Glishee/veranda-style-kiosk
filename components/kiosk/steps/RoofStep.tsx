@@ -1,18 +1,20 @@
 'use client'
 import { useKiosk } from '@/context/KioskContext'
-import type { RoofMaterialRow, Lang } from '@/lib/types'
+import { useT } from '@/hooks/useT'
+import type { RoofMaterialRow } from '@/lib/types'
 
 interface Props { roofMaterials: RoofMaterialRow[] }
 
 export function RoofStep({ roofMaterials }: Props) {
   const { state, dispatch } = useKiosk()
+  const t = useT()
 
   return (
     <div className="flex-1 overflow-y-auto p-5">
-      <h2 className="text-base font-bold text-gray-900 mb-4">Choose roof material</h2>
+      <h2 className="text-base font-bold text-gray-900 mb-4">{t.step3.title}</h2>
       <div className="flex flex-col gap-3">
         {roofMaterials.map(r => {
-          const t = r.translations[state.lang]
+          const tr = r.translations[state.lang]
           return (
             <button
               key={r.slug}
@@ -27,8 +29,8 @@ export function RoofStep({ roofMaterials }: Props) {
                 {state.roofSlug === r.slug && <div className="w-2 h-2 bg-white rounded-full" />}
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-900">{t?.label ?? r.slug}</p>
-                <p className="text-[11px] text-gray-400 mt-0.5">{t?.description}</p>
+                <p className="text-sm font-semibold text-gray-900">{tr?.label ?? r.slug}</p>
+                <p className="text-[11px] text-gray-400 mt-0.5">{tr?.description}</p>
               </div>
             </button>
           )

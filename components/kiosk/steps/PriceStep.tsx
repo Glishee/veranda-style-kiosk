@@ -1,10 +1,12 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useKiosk } from '@/context/KioskContext'
+import { useT } from '@/hooks/useT'
 import type { PriceResponse } from '@/lib/types'
 
 export function PriceStep() {
   const { state, dispatch } = useKiosk()
+  const t = useT()
   const [data, setData] = useState<PriceResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -40,20 +42,20 @@ export function PriceStep() {
       .finally(() => setLoading(false))
   }, [])
 
-  if (loading) return <div className="flex-1 flex items-center justify-center"><p className="text-gray-400 text-sm">Calculating...</p></div>
-  if (error || !data) return <div className="flex-1 flex items-center justify-center"><p className="text-red-400 text-sm">Could not calculate price.</p></div>
+  if (loading) return <div className="flex-1 flex items-center justify-center"><p className="text-gray-400 text-sm">{t.step6.calculating}</p></div>
+  if (error || !data) return <div className="flex-1 flex items-center justify-center"><p className="text-red-400 text-sm">{t.step6.error}</p></div>
 
   return (
     <div className="flex-1 overflow-y-auto p-5">
-      <h2 className="text-base font-bold text-gray-900 mb-4">Your estimated price</h2>
+      <h2 className="text-base font-bold text-gray-900 mb-4">{t.step6.title}</h2>
 
       <div className="bg-gray-900 p-5 mb-4">
-        <p className="text-[9px] tracking-[2px] text-gray-500 uppercase mb-2">Estimated total</p>
+        <p className="text-[9px] tracking-[2px] text-gray-500 uppercase mb-2">{t.step6.estimated}</p>
         <p className="text-4xl font-black text-white tracking-wide mb-1">
           € {data.estimated.toLocaleString()}
         </p>
         <p className="text-[11px] text-green-600 mb-4">
-          Range: € {data.rangeLow.toLocaleString()} – € {data.rangeHigh.toLocaleString()}
+          {t.step6.range}: € {data.rangeLow.toLocaleString()} – € {data.rangeHigh.toLocaleString()}
         </p>
         <div className="border-t border-gray-800 pt-3 flex flex-col gap-1">
           {data.breakdown.map(row => (
@@ -66,9 +68,7 @@ export function PriceStep() {
       </div>
 
       <div className="bg-gray-50 border border-gray-200 p-3">
-        <p className="text-[10px] text-gray-400 leading-relaxed">
-          ⚠ Indicative price only. Final cost will be confirmed after reviewing photos, exact measurements and installation site.
-        </p>
+        <p className="text-[10px] text-gray-400 leading-relaxed">⚠ {t.step6.disclaimer}</p>
       </div>
     </div>
   )

@@ -1,18 +1,20 @@
 'use client'
 import { useKiosk } from '@/context/KioskContext'
-import type { StructureRow, Lang } from '@/lib/types'
+import { useT } from '@/hooks/useT'
+import type { StructureRow } from '@/lib/types'
 
 interface Props { structures: StructureRow[] }
 
 export function StructureStep({ structures }: Props) {
   const { state, dispatch } = useKiosk()
+  const t = useT()
 
   return (
     <div className="flex-1 overflow-y-auto p-5">
-      <h2 className="text-base font-bold text-gray-900 mb-4">How will it be installed?</h2>
+      <h2 className="text-base font-bold text-gray-900 mb-4">{t.step2.title}</h2>
       <div className="flex flex-col gap-3">
         {structures.map(s => {
-          const t = s.translations[state.lang]
+          const tr = s.translations[state.lang]
           return (
             <button
               key={s.slug}
@@ -27,8 +29,8 @@ export function StructureStep({ structures }: Props) {
                 {state.structureSlug === s.slug && <div className="w-2 h-2 bg-white rounded-full" />}
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-900">{t?.label ?? s.slug}</p>
-                <p className="text-[11px] text-gray-400 mt-0.5">{t?.description}</p>
+                <p className="text-sm font-semibold text-gray-900">{tr?.label ?? s.slug}</p>
+                <p className="text-[11px] text-gray-400 mt-0.5">{tr?.description}</p>
               </div>
             </button>
           )
