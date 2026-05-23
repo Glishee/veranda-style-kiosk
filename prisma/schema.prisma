@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Product {
+  id            String         @id @default(cuid())
+  slug          String         @unique
+  order         Int
+  translations  Json
+  videoUrl      String?
+  imageUrl      String?
+  baseRateEur   Float
+  structures    Structure[]
+  roofMaterials RoofMaterial[]
+  options       Option[]
+}
+
+model Structure {
+  id           String  @id @default(cuid())
+  productId    String
+  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  slug         String
+  translations Json
+}
+
+model RoofMaterial {
+  id           String  @id @default(cuid())
+  productId    String
+  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  slug         String
+  coefficient  Float
+  translations Json
+}
+
+model Option {
+  id           String  @id @default(cuid())
+  productId    String
+  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  slug         String
+  priceEur     Float
+  translations Json
+}
+
+model Lead {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  productSlug  String
+  structure    String
+  roofMaterial String
+  options      String[]
+  widthMm      Int
+  depthMm      Int
+  heightMm     Int
+  estimatedEur Int
+  name         String
+  phone        String
+  email        String?
+  city         String
+  postcode     String
+  comment      String?
+  lang         String   @default("en")
+}
