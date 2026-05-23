@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import type { RoofMaterial, Option } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 import { calculatePrice } from '@/lib/price'
 
@@ -25,12 +26,12 @@ export async function POST(req: NextRequest) {
   })
   if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 })
 
-  const roof = product.roofMaterials.find(r => r.slug === roofSlug)
+  const roof = product.roofMaterials.find((r: RoofMaterial) => r.slug === roofSlug)
   const roofCoefficient = roof?.coefficient ?? 1.0
 
   const optionPrices = product.options
-    .filter(o => selectedOptions.includes(o.slug))
-    .map(o => o.priceEur)
+    .filter((o: Option) => selectedOptions.includes(o.slug))
+    .map((o: Option) => o.priceEur)
 
   const result = calculatePrice({
     baseRateEur: product.baseRateEur,
