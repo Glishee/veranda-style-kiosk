@@ -1,0 +1,55 @@
+{
+  "_note": "TODO: translate all strings to German",
+  "splash": {
+    "tagline": "Premium Outdoor Structures",
+    "tap": "Touch anywhere to start"
+  },
+  "nav": {
+    "brand": "Veranda Style"
+  },
+  "steps": {
+    "step": "Step {current} of {total}",
+    "back": "Back",
+    "continue": "Continue",
+    "sendQuote": "Send & Get Quote"
+  },
+  "step1": { "title": "What would you like to configure?" },
+  "step2": { "title": "How will it be installed?" },
+  "step3": { "title": "Choose roof material" },
+  "step4": { "title": "Add options", "optional": "optional" },
+  "step5": {
+    "title": "Enter dimensions",
+    "width": "Width",
+    "depth": "Depth",
+    "height": "Height",
+    "unit": "mm",
+    "hint": "All values in millimetres (mm)"
+  },
+  "step6": {
+    "title": "Your estimated price",
+    "estimated": "Estimated total",
+    "range": "Indicative range",
+    "disclaimer": "Indicative price only. Final cost will be confirmed after reviewing photos, exact measurements and installation site."
+  },
+  "step7": {
+    "title": "Leave your contact",
+    "name": "Full Name",
+    "phone": "Phone",
+    "email": "E-mail",
+    "city": "City",
+    "postcode": "Postcode",
+    "comment": "Comment",
+    "optional": "optional"
+  },
+  "success": {
+    "title": "Request sent!",
+    "body": "Thank you. We'll prepare your quote and contact you within 24 hours.",
+    "whatsapp": "Continue on WhatsApp",
+    "restart": "Start over"
+  },
+  "price": {
+    "baseStructure": "Base structure",
+    "material": "Material",
+    "options": "Options"
+  }
+}
