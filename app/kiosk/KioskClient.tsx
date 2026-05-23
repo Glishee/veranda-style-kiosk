@@ -1,7 +1,7 @@
 'use client'
 import { useKiosk } from '@/context/KioskContext'
 import { useIdleTimer } from '@/hooks/useIdleTimer'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { SplashScreen } from '@/components/kiosk/SplashScreen'
 import { LeftPanel } from '@/components/kiosk/LeftPanel'
 import { StepProgress } from '@/components/kiosk/StepProgress'
@@ -26,6 +26,7 @@ const STEP_LABELS = [
 
 export function KioskClient({ products }: Props) {
   const { state, dispatch } = useKiosk()
+  const [submitError, setSubmitError] = useState(false)
   const handleIdle = useCallback(() => dispatch({ type: 'RESET' }), [dispatch])
   useIdleTimer({ timeoutMs: 90_000, onIdle: handleIdle, enabled: state.step > 0 })
 
@@ -43,7 +44,8 @@ export function KioskClient({ products }: Props) {
     if (state.step === 7) {
       const { name, phone, city, postcode } = state.contact
       if (!name || !phone || !city || !postcode) return
-      await fetch('/api/leads', {
+      setSubmitError(false)
+      const res = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -59,6 +61,10 @@ export function KioskClient({ products }: Props) {
           lang: state.lang,
         }),
       })
+      if (!res.ok) {
+        setSubmitError(true)
+        return
+      }
     }
     dispatch({ type: 'NEXT_STEP' })
   }
@@ -107,26 +113,33 @@ export function KioskClient({ products }: Props) {
         </div>
 
         {state.step >= 1 && state.step <= 7 && (
-          <div className="bg-white border-t border-gray-200 px-5 py-3 flex gap-2 flex-shrink-0">
-            {state.step > 1 && (
-              <button
-                onClick={() => dispatch({ type: 'PREV_STEP' })}
-                className="border border-gray-200 text-gray-500 px-5 h-11 text-[10px] tracking-widest uppercase"
-              >
-                ← Back
-              </button>
+          <div className="bg-white border-t border-gray-200 px-5 py-3 flex flex-col gap-2 flex-shrink-0">
+            {submitError && (
+              <p className="text-red-500 text-[10px] text-center mb-2">
+                Failed to submit. Please try again.
+              </p>
             )}
-            <button
-              onClick={handleNext}
-              disabled={!canAdvance()}
-              className={`flex-1 h-11 text-[11px] font-bold tracking-widest uppercase transition-all ${
-                canAdvance()
-                  ? state.step === 7 ? 'bg-green-800 text-white' : 'bg-gray-900 text-white'
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              }`}
-            >
-              {state.step === 7 ? 'Send & Get Quote' : 'Continue →'}
-            </button>
+            <div className="flex gap-2">
+              {state.step > 1 && (
+                <button
+                  onClick={() => dispatch({ type: 'PREV_STEP' })}
+                  className="border border-gray-200 text-gray-500 px-5 h-11 text-[10px] tracking-widest uppercase"
+                >
+                  ← Back
+                </button>
+              )}
+              <button
+                onClick={handleNext}
+                disabled={!canAdvance()}
+                className={`flex-1 h-11 text-[11px] font-bold tracking-widest uppercase transition-all ${
+                  canAdvance()
+                    ? state.step === 7 ? 'bg-green-800 text-white' : 'bg-gray-900 text-white'
+                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                }`}
+              >
+                {state.step === 7 ? 'Send & Get Quote' : 'Continue →'}
+              </button>
+            </div>
           </div>
         )}
       </div>
