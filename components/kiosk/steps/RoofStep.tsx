@@ -12,7 +12,7 @@ export function RoofStep({ roofMaterials }: Props) {
       <h2 className="text-base font-bold text-gray-900 mb-4">Choose roof material</h2>
       <div className="flex flex-col gap-3">
         {roofMaterials.map(r => {
-          const t = (r.translations as Record<Lang, { label: string; description: string }>)[state.lang]
+          const t = r.translations[state.lang]
           return (
             <button
               key={r.slug}

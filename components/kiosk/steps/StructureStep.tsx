@@ -12,7 +12,7 @@ export function StructureStep({ structures }: Props) {
       <h2 className="text-base font-bold text-gray-900 mb-4">How will it be installed?</h2>
       <div className="flex flex-col gap-3">
         {structures.map(s => {
-          const t = (s.translations as Record<Lang, { label: string; description: string }>)[state.lang]
+          const t = s.translations[state.lang]
           return (
             <button
               key={s.slug}

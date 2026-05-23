@@ -19,7 +19,7 @@ export function ProductGrid({ products }: Props) {
       </h2>
       <div className="grid grid-cols-2 gap-3">
         {products.map(p => {
-          const t = (p.translations as Record<Lang, { name: string }>)[state.lang]
+          const t = p.translations[state.lang]
           return (
             <button
               key={p.slug}

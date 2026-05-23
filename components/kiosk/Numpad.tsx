@@ -12,11 +12,11 @@ export function Numpad({ initialValue, onConfirm, onCancel, label }: Props) {
   const [raw, setRaw] = useState(initialValue?.toString() ?? '')
 
   function press(char: string) {
-    if (char === '⌫') {
-      setRaw(prev => prev.slice(0, -1))
-    } else if (raw.length < 6) {
-      setRaw(prev => prev + char)
-    }
+    setRaw(prev => {
+      if (char === '⌫') return prev.slice(0, -1)
+      if (prev.length >= 6) return prev
+      return prev + char
+    })
   }
 
   const keys = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '⌫', '0', 'OK']
@@ -35,10 +35,10 @@ export function Numpad({ initialValue, onConfirm, onCancel, label }: Props) {
           {keys.map(key => (
             <button
               key={key}
-              onClick={() => key === 'OK' ? (raw && onConfirm(parseInt(raw))) : press(key)}
+              onClick={() => key === 'OK' ? (raw && onConfirm(parseInt(raw, 10))) : press(key)}
               className={`h-14 text-lg font-semibold border-b border-r border-gray-100 transition-colors ${
                 key === 'OK'
-                  ? 'bg-gray-900 text-white'
+                  ? `bg-gray-900 text-white${!raw ? ' opacity-50' : ''}`
                   : key === '⌫'
                   ? 'bg-gray-50 text-gray-500'
                   : 'bg-white text-gray-800 active:bg-gray-100'

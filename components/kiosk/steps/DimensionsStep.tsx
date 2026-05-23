@@ -47,8 +47,10 @@ export function DimensionsStep() {
           label={FIELDS.find(f => f.field === activeField)!.label + ' (mm)'}
           initialValue={state[activeField]}
           onConfirm={value => {
-            dispatch({ type: 'SET_DIMENSION', field: activeField, value })
-            setActiveField(null)
+            if (value > 0) {
+              dispatch({ type: 'SET_DIMENSION', field: activeField, value })
+              setActiveField(null)
+            }
           }}
           onCancel={() => setActiveField(null)}
         />
