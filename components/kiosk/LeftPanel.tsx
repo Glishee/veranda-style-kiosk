@@ -78,6 +78,15 @@ const PRODUCT_SVGS: Record<string, React.ReactNode> = {
 
 const DEFAULT_SVG = PRODUCT_SVGS['canopy']
 
+const PRODUCT_NAMES: Record<string, string> = {
+  canopy: 'Terrace Canopy',
+  'winter-garden': 'Winter Garden',
+  pergola: 'Bioclimatic Pergola',
+  sliding: 'Sliding Glass System',
+  'zip-screen': 'ZIP Screen',
+  carport: 'Carport',
+}
+
 export function LeftPanel() {
   const { state } = useKiosk()
   const slug = state.productSlug ?? 'canopy'
@@ -92,7 +101,7 @@ export function LeftPanel() {
       <div className="relative z-10 p-8 bg-gradient-to-t from-black/90 to-transparent">
         <p className="text-xs tracking-[3px] text-white/40 uppercase mb-1">Configuring</p>
         <h2 className="text-2xl font-bold text-white tracking-wide transition-all duration-300">
-          {state.productSlug ? 'Selected Product' : 'Veranda Style'}
+          {state.productSlug ? (PRODUCT_NAMES[state.productSlug] ?? state.productSlug) : 'Veranda Style'}
         </h2>
         <p className="text-sm text-white/30 mt-1">Premium Outdoor Structures</p>
       </div>
