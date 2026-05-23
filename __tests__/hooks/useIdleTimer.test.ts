@@ -1,8 +1,9 @@
-// __tests__/hooks/useIdleTimer.test.ts
 import { renderHook, act } from '@testing-library/react'
 import { useIdleTimer } from '@/hooks/useIdleTimer'
 
-jest.useFakeTimers()
+beforeAll(() => jest.useFakeTimers())
+afterAll(() => jest.useRealTimers())
+beforeEach(() => jest.clearAllTimers())
 
 describe('useIdleTimer', () => {
   it('calls onIdle after the specified timeout', () => {

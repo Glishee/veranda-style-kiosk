@@ -1,4 +1,3 @@
-// hooks/useIdleTimer.ts
 import { useEffect, useRef } from 'react'
 
 interface Options {
@@ -8,24 +7,27 @@ interface Options {
 }
 
 const EVENTS = ['mousemove', 'mousedown', 'touchstart', 'keydown', 'scroll']
+const LISTENER_OPTIONS: AddEventListenerOptions = { passive: true }
 
 export function useIdleTimer({ timeoutMs, onIdle, enabled = true }: Options) {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const onIdleRef = useRef(onIdle)
+  onIdleRef.current = onIdle
 
   useEffect(() => {
     if (!enabled) return
 
     function reset() {
       if (timer.current) clearTimeout(timer.current)
-      timer.current = setTimeout(onIdle, timeoutMs)
+      timer.current = setTimeout(() => onIdleRef.current(), timeoutMs)
     }
 
     reset()
-    EVENTS.forEach(e => window.addEventListener(e, reset, { passive: true }))
+    EVENTS.forEach(e => window.addEventListener(e, reset, LISTENER_OPTIONS))
 
     return () => {
       if (timer.current) clearTimeout(timer.current)
-      EVENTS.forEach(e => window.removeEventListener(e, reset))
+      EVENTS.forEach(e => window.removeEventListener(e, reset, LISTENER_OPTIONS))
     }
-  }, [timeoutMs, onIdle, enabled])
+  }, [timeoutMs, enabled])
 }

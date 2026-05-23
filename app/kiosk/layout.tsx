@@ -1,3 +1,4 @@
+'use client'
 import { KioskProvider } from '@/context/KioskContext'
 
 export default function KioskLayout({ children }: { children: React.ReactNode }) {

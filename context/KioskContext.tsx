@@ -21,7 +21,9 @@ export const INITIAL_STATE: ConfiguratorState = {
 function reducer(state: ConfiguratorState, action: ConfiguratorAction): ConfiguratorState {
   switch (action.type) {
     case 'SET_LANG':
-      return { ...INITIAL_STATE, lang: action.lang }
+      return state.step === 0
+        ? { ...state, lang: action.lang }
+        : { ...INITIAL_STATE, lang: action.lang, step: 1 }
     case 'START':
       return { ...state, step: 1 }
     case 'SET_PRODUCT':
