@@ -11,7 +11,7 @@ export function PriceStep() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (!state.productSlug || !state.roofSlug || !state.widthMm || !state.depthMm) {
+    if (!state.productSlug || !state.widthMm || !state.depthMm) {
       setLoading(false)
       setError(true)
       return
@@ -22,7 +22,7 @@ export function PriceStep() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         productSlug: state.productSlug,
-        roofSlug: state.roofSlug,
+        roofSlug: state.roofSlug ?? 'none',
         selectedOptions: state.selectedOptions,
         widthMm: state.widthMm,
         depthMm: state.depthMm,
