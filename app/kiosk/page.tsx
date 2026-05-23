@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma'
 import { KioskClient } from './KioskClient'
 import type { ProductRow } from '@/lib/types'
 
+export const dynamic = 'force-dynamic'
+
 export default async function KioskPage() {
   const products = await prisma.product.findMany({
     orderBy: { order: 'asc' },
