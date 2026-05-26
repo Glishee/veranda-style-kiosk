@@ -4,11 +4,13 @@
   },
   "step1": {
     "label": "Kategorie wählen",
-    "title": "Unsere Produkte"
+    "title": "Unsere Produkte",
+    "next": "Weiter"
   },
   "step2": {
     "label": "Produkt wählen",
-    "title": "Modelle"
+    "title": "Modelle",
+    "back": "Zurück zu Kategorien"
   },
   "step3": {
     "label": "Produkt",

@@ -16,12 +16,17 @@ export default function SubcategoryStep({ products }: Props) {
     dispatch({ type: 'SET_PRODUCT', slug })
   }
 
+  function handleBack() {
+    resetTimer()
+    dispatch({ type: 'PREV_STEP' })
+  }
+
   return (
     <div className="flex flex-col h-full">
       <p className="text-[8px] tracking-[3px] uppercase text-gray-400 mb-3">
         {t.step2.label}
       </p>
-      <div className="flex flex-col gap-1.5 overflow-y-auto">
+      <div className="flex flex-col gap-1.5 flex-1 overflow-y-auto">
         {products.map((product) => (
           <button
             key={product.slug}
@@ -32,6 +37,15 @@ export default function SubcategoryStep({ products }: Props) {
             <span className="opacity-40 text-[10px]">›</span>
           </button>
         ))}
+      </div>
+
+      <div className="mt-3 pt-3 border-t border-[#e5e0d8]">
+        <button
+          onClick={handleBack}
+          className="w-full border-[1.5px] border-[#d1cdc8] text-[#6b7280] py-3 text-[9px] font-extrabold tracking-[2px] uppercase min-h-[48px]"
+        >
+          ← {t.step2.back}
+        </button>
       </div>
     </div>
   )
