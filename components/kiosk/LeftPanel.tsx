@@ -12,12 +12,8 @@ const SLIDE_INTERVAL_MS = 3000
 export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  // Reset to first slide whenever the image set changes
-  useEffect(() => {
-    setCurrentIndex(0)
-  }, [imageUrls])
+  useEffect(() => { setCurrentIndex(0) }, [imageUrls])
 
-  // Auto-advance only when gallery has multiple images
   useEffect(() => {
     if (imageUrls.length <= 1) return
     const id = setInterval(() => {
@@ -29,10 +25,9 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
   const hasImages = imageUrls.length > 0
 
   return (
-    <div className="relative w-[58%] flex-shrink-0 flex flex-col justify-end overflow-hidden bg-[#080c12]">
+    <div className="relative w-full h-56 md:h-full md:w-[58%] md:flex-shrink-0 flex flex-col justify-end overflow-hidden bg-[#080c12]">
 
       {hasImages ? (
-        /* All images stacked — cross-fade via opacity transition */
         imageUrls.map((url, i) => (
           <div
             key={url}
@@ -44,7 +39,6 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
           />
         ))
       ) : (
-        /* Gradient fallback when no image */
         <div className="absolute inset-0 bg-gradient-to-br from-[#0a1a2a] via-[#1a3050] to-[#0d1a28]">
           <div className="absolute inset-0 flex items-center justify-center opacity-15">
             <svg viewBox="0 0 200 140" width="280" fill="none">
@@ -57,24 +51,23 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
         </div>
       )}
 
-      {/* Dark gradient overlay on bottom half */}
       <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/85 to-transparent" />
 
-      {/* Text + dot indicators */}
-      <div className="relative z-10 p-6">
-        <p className="text-[8px] tracking-[3px] uppercase text-white/40 mb-1">
-          {sublabel ?? 'Veranda Style'}
-        </p>
-        <h2 className="text-xl font-extrabold tracking-wide text-white leading-tight">
+      <div className="relative z-10 p-4 md:p-6">
+        {sublabel && (
+          <p className="hidden md:block text-[8px] tracking-[3px] uppercase text-white/40 mb-1">
+            {sublabel}
+          </p>
+        )}
+        <h2 className="text-sm md:text-xl font-extrabold tracking-wide text-white leading-tight">
           {label}
         </h2>
-        <p className="text-[10px] text-white/35 tracking-wide mt-1">
+        <p className="hidden md:block text-[10px] text-white/35 tracking-wide mt-1">
           Premium Outdoor Structures · Poland
         </p>
 
-        {/* Dots — only in gallery mode */}
         {imageUrls.length > 1 && (
-          <div className="flex items-center gap-1.5 mt-3">
+          <div className="flex items-center gap-1.5 mt-2 md:mt-3">
             {imageUrls.map((_, i) => (
               <div
                 key={i}
