@@ -26,7 +26,17 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env*.local
+
+# brainstorm / visual companion sessions
+.superpowers/
+
+# large build artifacts
+*.zip
+
+# content source files (binary / large)
+/content/
 
 # vercel
 .vercel
