@@ -9,6 +9,17 @@ interface LeftPanelProps {
 
 const SLIDE_INTERVAL_MS = 3000
 
+const IMAGE_BG_POSITIONS: Record<string, string> = {
+  '/products/image1.png': 'center top',
+  '/products/image2.png': 'center top',
+  '/products/image4.png': 'center top',
+  '/products/image5.png': 'center top',
+  '/products/image6.png': 'center top',
+  '/products/image7.png': 'center top',
+  '/products/image8.png': 'center top',
+  '/products/image9.png': 'center top',
+}
+
 export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -31,9 +42,10 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
         imageUrls.map((url, i) => (
           <div
             key={url}
-            className="absolute inset-0 bg-cover bg-center transition-opacity duration-700"
+            className="absolute inset-0 bg-cover transition-opacity duration-700"
             style={{
               backgroundImage: `url(${url})`,
+              backgroundPosition: IMAGE_BG_POSITIONS[url] ?? 'center',
               opacity: i === currentIndex ? 1 : 0,
             }}
           />
