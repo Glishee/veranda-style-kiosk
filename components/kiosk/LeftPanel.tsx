@@ -10,14 +10,14 @@ interface LeftPanelProps {
 const SLIDE_INTERVAL_MS = 3000
 
 const IMAGE_BG_POSITIONS: Record<string, string> = {
-  '/products/image1.png': 'center top',
-  '/products/image2.png': 'center top',
-  '/products/image4.png': 'center top',
-  '/products/image5.png': 'center top',
-  '/products/image6.png': 'center top',
-  '/products/image7.png': 'center top',
-  '/products/image8.png': 'center top',
-  '/products/image9.png': 'center top',
+  '/products/image1.png': 'center 30%',
+  '/products/image2.png': 'center 30%',
+  '/products/image4.png': 'center 30%',
+  '/products/image5.png': 'center 30%',
+  '/products/image6.png': 'center 30%',
+  '/products/image7.png': 'center 30%',
+  '/products/image8.png': 'center 30%',
+  '/products/image9.png': 'center 30%',
 }
 
 export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps) {
