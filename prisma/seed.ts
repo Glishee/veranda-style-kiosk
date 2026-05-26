@@ -1,5 +1,15 @@
+import * as dotenv from 'dotenv'
+dotenv.config({ path: '.env.local' })
+dotenv.config({ path: '.env' })
+
 import { PrismaPg } from '@prisma/adapter-pg'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../generated/prisma/client'
+
+type Translations = {
+  pl: { name: string; description?: string }
+  en: { name: string; description?: string }
+  de: { name: string; description?: string }
+}
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! })
 const prisma = new PrismaClient({ adapter })
@@ -76,7 +86,7 @@ const PRODUCTS: Array<{
   slug: string
   order: number
   imageUrl: string
-  translations: object
+  translations: Translations
 }> = [
   // --- Zadaszenia (9) ---
   {

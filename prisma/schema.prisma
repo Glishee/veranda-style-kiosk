@@ -1,66 +1,39 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
+model Category {
+  id           String    @id @default(cuid())
+  slug         String    @unique
+  order        Int
+  translations Json      // { pl: { name }, en: { name }, de: { name } }
+  products     Product[]
+}
+
 model Product {
-  id            String         @id @default(cuid())
-  slug          String         @unique
-  order         Int
-  translations  Json
-  videoUrl      String?
-  imageUrl      String?
-  baseRateEur   Float
-  structures    Structure[]
-  roofMaterials RoofMaterial[]
-  options       Option[]
-}
-
-model Structure {
-  id           String  @id @default(cuid())
-  productId    String
-  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  slug         String
-  translations Json
-}
-
-model RoofMaterial {
-  id           String  @id @default(cuid())
-  productId    String
-  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  slug         String
-  coefficient  Float
-  translations Json
-}
-
-model Option {
-  id           String  @id @default(cuid())
-  productId    String
-  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  slug         String
-  priceEur     Float
-  translations Json
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  order        Int
+  categoryId   String
+  category     Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  translations Json     // { pl: { name, description }, en: { name, description }, de: { name, description } }
+  imageUrl     String
 }
 
 model Lead {
   id           String   @id @default(cuid())
   createdAt    DateTime @default(now())
+  categorySlug String
   productSlug  String
-  structure    String
-  roofMaterial String
-  options      String[]
-  widthMm      Int
-  depthMm      Int
-  heightMm     Int
-  estimatedEur Int
   name         String
   phone        String
-  email        String?
   city         String
   postcode     String
   comment      String?
-  lang         String   @default("en")
+  lang         String   @default("pl")
 }

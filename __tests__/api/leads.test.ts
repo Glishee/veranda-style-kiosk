@@ -3,7 +3,7 @@
  */
 
 // Mock PrismaClient and Resend so the module loads without a DB connection
-jest.mock('@prisma/client', () => {
+jest.mock('../../generated/prisma/client', () => {
   return {
     PrismaClient: jest.fn().mockImplementation(() => ({
       lead: { create: jest.fn().mockResolvedValue({ id: 'test-id' }) },
