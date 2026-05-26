@@ -38,10 +38,10 @@ export default function CategoryStep({ categories, onPreview }: Props) {
             <button
               key={cat.slug}
               onClick={() => handleSelect(cat.slug)}
-              className={`flex items-center justify-between w-full border-[1.5px] px-3.5 py-3 text-left text-[10px] font-bold tracking-[1.5px] uppercase transition-all min-h-[48px] ${
+              className={`flex items-center justify-between w-full border-[1.5px] px-3.5 py-3 text-left text-[10px] font-bold tracking-[1.5px] uppercase transition-all duration-150 active:scale-[0.98] active:opacity-75 min-h-[48px] ${
                 isSelected
                   ? 'bg-[#111] text-white border-[#111]'
-                  : 'bg-white text-[#1f2937] border-[#e5e0d8]'
+                  : 'bg-white text-[#1f2937] border-[#e5e0d8] hover:border-[#999] hover:bg-[#f5f2ef]'
               }`}
             >
               <span>{cat.translations[state.lang]?.name ?? cat.slug}</span>
@@ -55,7 +55,7 @@ export default function CategoryStep({ categories, onPreview }: Props) {
         <div className="mt-3 pt-3 border-t border-[#e5e0d8]">
           <button
             onClick={handleNext}
-            className="w-full bg-[#111] text-white py-3 text-[9px] font-extrabold tracking-[2px] uppercase min-h-[48px]"
+            className="w-full bg-[#111] text-white py-3 text-[9px] font-extrabold tracking-[2px] uppercase min-h-[48px] transition-all duration-150 active:scale-[0.98] active:opacity-80"
           >
             {t.step1.next} →
           </button>

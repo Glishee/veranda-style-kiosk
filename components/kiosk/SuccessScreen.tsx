@@ -33,7 +33,7 @@ export default function SuccessScreen() {
         </p>
         <button
           onClick={handleReset}
-          className="border-[1.5px] border-white/30 text-white/70 px-8 py-3 text-[9px] font-bold tracking-[3px] uppercase hover:border-white hover:text-white transition-all min-h-[48px]"
+          className="border-[1.5px] border-white/30 text-white/70 px-8 py-3 text-[9px] font-bold tracking-[3px] uppercase hover:border-white hover:text-white transition-all duration-150 active:scale-[0.97] active:opacity-75 min-h-[48px]"
         >
           {t.success.reset}
         </button>

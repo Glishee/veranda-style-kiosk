@@ -31,7 +31,7 @@ export default function SubcategoryStep({ products }: Props) {
           <button
             key={product.slug}
             onClick={() => handleSelect(product.slug)}
-            className="flex items-center justify-between w-full bg-white border-[1.5px] border-[#e5e0d8] px-3.5 py-3 text-left text-[10px] font-bold tracking-[1.5px] uppercase text-[#1f2937] transition-all active:bg-[#111] active:text-white active:border-[#111] min-h-[48px]"
+            className="flex items-center justify-between w-full bg-white border-[1.5px] border-[#e5e0d8] px-3.5 py-3 text-left text-[10px] font-bold tracking-[1.5px] uppercase text-[#1f2937] transition-all duration-150 hover:border-[#999] hover:bg-[#f5f2ef] active:scale-[0.98] active:bg-[#111] active:text-white active:border-[#111] min-h-[48px]"
           >
             <span>{product.translations[state.lang]?.name ?? product.slug}</span>
             <span className="opacity-40 text-[10px]">›</span>
@@ -42,7 +42,7 @@ export default function SubcategoryStep({ products }: Props) {
       <div className="mt-3 pt-3 border-t border-[#e5e0d8]">
         <button
           onClick={handleBack}
-          className="w-full border-[1.5px] border-[#d1cdc8] text-[#6b7280] py-3 text-[9px] font-extrabold tracking-[2px] uppercase min-h-[48px]"
+          className="w-full border-[1.5px] border-[#d1cdc8] text-[#6b7280] py-3 text-[9px] font-extrabold tracking-[2px] uppercase min-h-[48px] transition-all duration-150 hover:border-[#999] hover:text-[#444] active:scale-[0.98] active:opacity-70"
         >
           ← {t.step2.back}
         </button>

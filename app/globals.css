@@ -2,25 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  background: #f9f7f4;
+  color: #111;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Step content fade-in when switching steps */
+  .animate-step-enter {
+    animation: stepEnter 0.22s ease-out both;
+  }
+}
+
+@keyframes stepEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

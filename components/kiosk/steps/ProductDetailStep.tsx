@@ -36,13 +36,13 @@ export default function ProductDetailStep({ product }: Props) {
       <div className="flex flex-col gap-1.5">
         <button
           onClick={handleAskPrice}
-          className="w-full bg-[#111] text-white py-3 text-[9px] font-extrabold tracking-[2px] uppercase min-h-[48px]"
+          className="w-full bg-[#111] text-white py-3 text-[9px] font-extrabold tracking-[2px] uppercase min-h-[48px] transition-all duration-150 active:scale-[0.98] active:opacity-80"
         >
           {t.step3.askPrice} →
         </button>
         <button
           onClick={handleBack}
-          className="w-full border-[1.5px] border-[#d1cdc8] text-[#6b7280] py-3 text-[9px] font-extrabold tracking-[2px] uppercase min-h-[48px]"
+          className="w-full border-[1.5px] border-[#d1cdc8] text-[#6b7280] py-3 text-[9px] font-extrabold tracking-[2px] uppercase min-h-[48px] transition-all duration-150 hover:border-[#999] hover:text-[#444] active:scale-[0.98] active:opacity-70"
         >
           ← {t.step3.back}
         </button>

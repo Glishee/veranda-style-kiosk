@@ -107,7 +107,8 @@ export default function KioskClient({ categories }: Props) {
       alt="Veranda Styl"
       width={140}
       height={74}
-      className="h-7 md:h-8 w-auto object-contain"
+      className="object-contain"
+      style={{ height: '30px', width: 'auto' }}
     />
   )
   const langSwitcher = (
@@ -116,7 +117,7 @@ export default function KioskClient({ categories }: Props) {
         <button
           key={lang}
           onClick={() => { resetTimer(); dispatch({ type: 'SET_LANG', lang }) }}
-          className={`text-[8px] md:text-[7px] tracking-[1px] border px-2 py-1 uppercase transition-all min-h-[36px] min-w-[36px] ${
+          className={`text-[8px] md:text-[7px] tracking-[1px] border px-2 py-1 uppercase transition-all duration-150 active:scale-[0.95] min-h-[36px] min-w-[36px] ${
             state.lang === lang
               ? 'bg-[#111] text-white border-[#111]'
               : 'text-[#999] border-[#ddd]'
@@ -157,8 +158,8 @@ export default function KioskClient({ categories }: Props) {
             {langSwitcher}
           </div>
 
-          {/* Step content — scrollable */}
-          <div className="flex-1 overflow-y-auto p-4">
+          {/* Step content — scrollable, re-mounts on step change for fade animation */}
+          <div key={state.step} className="flex-1 overflow-y-auto p-4 animate-step-enter">
             {state.step === 1 && (
               <CategoryStep
                 categories={categories}
@@ -180,7 +181,7 @@ export default function KioskClient({ categories }: Props) {
               <button
                 onClick={handleSubmit}
                 disabled={isSubmitDisabled}
-                className="w-full bg-[#111] text-white py-3 text-[9px] font-extrabold tracking-[2px] uppercase min-h-[48px] disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+                className="w-full bg-[#111] text-white py-3 text-[9px] font-extrabold tracking-[2px] uppercase min-h-[48px] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150 active:scale-[0.98] active:opacity-80"
               >
                 {submitting ? '...' : `${t.step4.submit} →`}
               </button>
