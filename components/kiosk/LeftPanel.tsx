@@ -31,7 +31,7 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
         imageUrls.map((url, i) => (
           <div
             key={url}
-            className="absolute inset-0 bg-cover bg-top md:bg-center transition-opacity duration-700"
+            className="absolute inset-0 bg-cover bg-center transition-opacity duration-700"
             style={{
               backgroundImage: `url(${url})`,
               opacity: i === currentIndex ? 1 : 0,
