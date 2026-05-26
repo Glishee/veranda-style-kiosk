@@ -1,20 +1,50 @@
 'use client'
+import { useState, useEffect } from 'react'
 
 interface LeftPanelProps {
-  imageUrl: string | null
+  imageUrls: string[]
   label: string
   sublabel?: string
 }
 
-export default function LeftPanel({ imageUrl, label, sublabel }: LeftPanelProps) {
+const SLIDE_INTERVAL_MS = 3000
+
+export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps) {
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  // Reset to first slide whenever the image set changes
+  useEffect(() => {
+    setCurrentIndex(0)
+  }, [imageUrls])
+
+  // Auto-advance only when gallery has multiple images
+  useEffect(() => {
+    if (imageUrls.length <= 1) return
+    const id = setInterval(() => {
+      setCurrentIndex((i) => (i + 1) % imageUrls.length)
+    }, SLIDE_INTERVAL_MS)
+    return () => clearInterval(id)
+  }, [imageUrls.length])
+
+  const hasImages = imageUrls.length > 0
+
   return (
     <div className="relative w-[58%] flex-shrink-0 flex flex-col justify-end overflow-hidden bg-[#080c12]">
-      {imageUrl ? (
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${imageUrl})` }}
-        />
+
+      {hasImages ? (
+        /* All images stacked — cross-fade via opacity transition */
+        imageUrls.map((url, i) => (
+          <div
+            key={url}
+            className="absolute inset-0 bg-cover bg-center transition-opacity duration-700"
+            style={{
+              backgroundImage: `url(${url})`,
+              opacity: i === currentIndex ? 1 : 0,
+            }}
+          />
+        ))
       ) : (
+        /* Gradient fallback when no image */
         <div className="absolute inset-0 bg-gradient-to-br from-[#0a1a2a] via-[#1a3050] to-[#0d1a28]">
           <div className="absolute inset-0 flex items-center justify-center opacity-15">
             <svg viewBox="0 0 200 140" width="280" fill="none">
@@ -26,9 +56,11 @@ export default function LeftPanel({ imageUrl, label, sublabel }: LeftPanelProps)
           </div>
         </div>
       )}
+
       {/* Dark gradient overlay on bottom half */}
       <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/85 to-transparent" />
-      {/* Text content */}
+
+      {/* Text + dot indicators */}
       <div className="relative z-10 p-6">
         <p className="text-[8px] tracking-[3px] uppercase text-white/40 mb-1">
           {sublabel ?? 'Veranda Style'}
@@ -39,6 +71,26 @@ export default function LeftPanel({ imageUrl, label, sublabel }: LeftPanelProps)
         <p className="text-[10px] text-white/35 tracking-wide mt-1">
           Premium Outdoor Structures · Poland
         </p>
+
+        {/* Dots — only in gallery mode */}
+        {imageUrls.length > 1 && (
+          <div className="flex items-center gap-1.5 mt-3">
+            {imageUrls.map((_, i) => (
+              <div
+                key={i}
+                className="rounded-full transition-all duration-500"
+                style={{
+                  width: '7px',
+                  height: '7px',
+                  backgroundColor: i === currentIndex
+                    ? 'rgba(255,255,255,0.95)'
+                    : 'rgba(255,255,255,0.3)',
+                  transform: i === currentIndex ? 'scale(1.2)' : 'scale(1)',
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

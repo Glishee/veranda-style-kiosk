@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useKiosk } from '@/context/KioskContext'
 import { useT } from '@/hooks/useT'
 import type { CategoryRow } from '@/lib/types'
@@ -12,6 +12,8 @@ import SubcategoryStep from '@/components/kiosk/steps/SubcategoryStep'
 import ProductDetailStep from '@/components/kiosk/steps/ProductDetailStep'
 import ContactStep from '@/components/kiosk/steps/ContactStep'
 
+const MAX_GALLERY_IMAGES = 5
+
 interface Props {
   categories: CategoryRow[]
 }
@@ -20,28 +22,46 @@ export default function KioskClient({ categories }: Props) {
   const { state, dispatch, resetTimer } = useKiosk()
   const t = useT()
   const [submitting, setSubmitting] = useState(false)
+  const [previewCategorySlug, setPreviewCategorySlug] = useState<string | null>(null)
+
+  // Reset gallery preview whenever the step changes
+  useEffect(() => {
+    setPreviewCategorySlug(null)
+  }, [state.step])
 
   const selectedCategory = categories.find((c) => c.slug === state.categorySlug) ?? null
   const selectedProduct = selectedCategory?.products.find((p) => p.slug === state.productSlug) ?? null
   const firstProductOfCategory = selectedCategory?.products[0] ?? null
-
-  // Left panel image and labels
-  const panelImageUrl =
-    state.step >= 3 ? (selectedProduct?.imageUrl ?? null)
-    : state.step === 2 ? (firstProductOfCategory?.imageUrl ?? null)
+  const previewCategory = state.step === 1
+    ? (categories.find((c) => c.slug === previewCategorySlug) ?? null)
     : null
 
+  // Left panel — image array for gallery or single image
+  let panelImageUrls: string[] = []
+  if (state.step === 1 && previewCategory) {
+    panelImageUrls = previewCategory.products
+      .slice(0, MAX_GALLERY_IMAGES)
+      .map((p) => p.imageUrl)
+  } else if (state.step >= 3 && selectedProduct) {
+    panelImageUrls = [selectedProduct.imageUrl]
+  } else if (state.step === 2 && firstProductOfCategory) {
+    panelImageUrls = [firstProductOfCategory.imageUrl]
+  }
+
+  // Left panel label and sublabel
   const panelLabel =
     state.step >= 3 && selectedProduct
       ? selectedProduct.translations[state.lang]?.name ?? selectedProduct.slug
     : state.step === 2 && selectedCategory
       ? selectedCategory.translations[state.lang]?.name ?? selectedCategory.slug
+    : state.step === 1 && previewCategory
+      ? previewCategory.translations[state.lang]?.name ?? previewCategory.slug
     : 'Veranda Style'
 
   const panelSublabel =
-    state.step === 2 && selectedCategory
+    state.step >= 3 && selectedCategory
       ? selectedCategory.translations[state.lang]?.name
-    : state.step >= 3 && selectedCategory
+    : state.step === 2 && selectedCategory
       ? selectedCategory.translations[state.lang]?.name
     : undefined
 
@@ -73,21 +93,19 @@ export default function KioskClient({ categories }: Props) {
     }
   }
 
-  // Splash screen covers full viewport
   if (state.step === 0) return <SplashScreen />
-
-  // Success screen covers full viewport
   if (state.step === 5) return <SuccessScreen />
 
   const isContactStep = state.step === 4
   const isSubmitDisabled =
-    submitting || !state.contact.name || !state.contact.phone || !state.contact.city || !state.contact.postcode
+    submitting || !state.contact.name || !state.contact.phone ||
+    !state.contact.city || !state.contact.postcode
 
   return (
     <div className="fixed inset-0 flex bg-[#f9f7f4]">
       {/* LEFT PANEL */}
       <LeftPanel
-        imageUrl={panelImageUrl}
+        imageUrls={panelImageUrls}
         label={panelLabel}
         sublabel={panelSublabel}
       />
@@ -118,7 +136,12 @@ export default function KioskClient({ categories }: Props) {
 
         {/* Step content */}
         <div className="flex-1 overflow-y-auto p-4">
-          {state.step === 1 && <CategoryStep categories={categories} />}
+          {state.step === 1 && (
+            <CategoryStep
+              categories={categories}
+              onPreview={setPreviewCategorySlug}
+            />
+          )}
           {state.step === 2 && selectedCategory && (
             <SubcategoryStep products={selectedCategory.products} />
           )}

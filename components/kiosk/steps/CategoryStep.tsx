@@ -6,9 +6,10 @@ import { useT } from '@/hooks/useT'
 
 interface Props {
   categories: CategoryRow[]
+  onPreview: (slug: string | null) => void
 }
 
-export default function CategoryStep({ categories }: Props) {
+export default function CategoryStep({ categories, onPreview }: Props) {
   const { state, dispatch, resetTimer } = useKiosk()
   const t = useT()
   const [previewSlug, setPreviewSlug] = useState<string | null>(null)
@@ -16,6 +17,7 @@ export default function CategoryStep({ categories }: Props) {
   function handleSelect(slug: string) {
     resetTimer()
     setPreviewSlug(slug)
+    onPreview(slug)
   }
 
   function handleNext() {
