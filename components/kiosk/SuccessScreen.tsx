@@ -2,35 +2,29 @@
 import { useKiosk } from '@/context/KioskContext'
 import { useT } from '@/hooks/useT'
 
-export function SuccessScreen() {
-  const { dispatch } = useKiosk()
+export default function SuccessScreen() {
+  const { dispatch, resetTimer } = useKiosk()
   const t = useT()
 
+  function handleReset() {
+    resetTimer()
+    dispatch({ type: 'RESET' })
+  }
+
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-      <div className="text-5xl mb-5">✅</div>
-      <h2 className="text-xl font-black text-gray-900 mb-3">{t.success.title}</h2>
-      <p className="text-sm text-gray-500 leading-relaxed mb-8 max-w-xs">{t.success.body}</p>
-
-      <div className="bg-gray-100 border border-gray-200 p-4 mb-6 text-center">
-        <div className="w-24 h-24 bg-gray-200 mx-auto mb-2 flex items-center justify-center">
-          <span className="text-[9px] text-gray-400 tracking-wider">QR SOON</span>
+    <div className="absolute inset-0 bg-[#111] flex flex-col items-center justify-center z-20 text-white px-8">
+      <div className="text-center">
+        <div className="text-4xl font-extrabold tracking-[3px] uppercase mb-4">
+          {t.success.title}
         </div>
-        <p className="text-[9px] text-gray-400 tracking-wider uppercase">{t.success.phone}</p>
-      </div>
-
-      <div className="flex flex-col gap-3 w-full max-w-xs">
+        <p className="text-sm text-white/60 tracking-wide mb-12">
+          {t.success.subtitle}
+        </p>
         <button
-          disabled
-          className="bg-green-700 text-white py-4 text-[11px] font-bold tracking-widest uppercase opacity-50 cursor-not-allowed"
+          onClick={handleReset}
+          className="border-[1.5px] border-white/30 text-white/70 px-8 py-3 text-[9px] font-bold tracking-[3px] uppercase hover:border-white hover:text-white transition-all min-h-[48px]"
         >
-          {t.success.whatsapp}
-        </button>
-        <button
-          onClick={() => dispatch({ type: 'RESET' })}
-          className="border border-gray-200 text-gray-400 py-3 text-[10px] tracking-widest uppercase"
-        >
-          {t.success.restart}
+          {t.success.reset}
         </button>
       </div>
     </div>
