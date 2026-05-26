@@ -10,7 +10,7 @@ interface LeftPanelProps {
 const SLIDE_INTERVAL_MS = 3000
 
 const IMAGE_BG_POSITIONS: Record<string, string> = {
-  '/products/image1.png': 'center 38%',
+  '/products/image1.png': 'center 22%',
   '/products/image2.png': 'center 30%',
   '/products/image4.png': 'center 30%',
   '/products/image5.png': 'center 30%',
