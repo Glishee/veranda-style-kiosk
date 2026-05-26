@@ -130,7 +130,7 @@ export default function KioskClient({ categories }: Props) {
 
   return (
     /* Outer shell: vertical stack on mobile, fixed full-screen on desktop */
-    <div className="flex flex-col min-h-screen md:fixed md:inset-0 bg-[#f9f7f4]">
+    <div className="flex flex-col w-full min-h-screen md:fixed md:inset-0 bg-[#f9f7f4]">
 
       {/* ── Mobile-only header (above the image) ── */}
       <div className="md:hidden bg-white border-b border-[#e5e0d8] px-4 h-12 flex items-center justify-between flex-shrink-0">
