@@ -3,7 +3,7 @@ import { useKiosk } from '@/context/KioskContext'
 import { useIdleTimer } from '@/hooks/useIdleTimer'
 import { useCallback, useState } from 'react'
 import { SplashScreen } from '@/components/kiosk/SplashScreen'
-import { LeftPanel } from '@/components/kiosk/LeftPanel'
+import LeftPanel from '@/components/kiosk/LeftPanel'
 import { StepProgress } from '@/components/kiosk/StepProgress'
 import { ProductGrid } from '@/components/kiosk/steps/ProductGrid'
 import { StructureStep } from '@/components/kiosk/steps/StructureStep'
@@ -83,7 +83,10 @@ export function KioskClient({ products }: Props) {
     <div className="relative w-full h-full flex">
       {state.step === 0 && <SplashScreen />}
 
-      <LeftPanel />
+      <LeftPanel
+        imageUrl={currentProduct?.imageUrl ?? null}
+        label={currentProduct?.translations[state.lang]?.name ?? 'Veranda Style'}
+      />
 
       <div className="w-[42%] h-full bg-[#f4f2ef] flex flex-col">
         <div className="bg-white border-b border-gray-200 px-5 h-[52px] flex items-center justify-between flex-shrink-0">
