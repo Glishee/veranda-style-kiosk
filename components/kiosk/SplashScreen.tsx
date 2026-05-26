@@ -40,7 +40,7 @@ export function SplashScreen() {
           Veranda Style
         </h1>
         <p className="text-[10px] tracking-[4px] text-white/30 uppercase mb-12">
-          {t.splash.tagline}
+          {t.splash.tap}
         </p>
         <p className="text-[11px] tracking-[3px] text-white/20 uppercase animate-pulse">
           ▸ &nbsp; {t.splash.tap} &nbsp; ◂
