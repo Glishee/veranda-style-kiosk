@@ -1,73 +1,35 @@
 {
   "splash": {
-    "tagline": "Ekskluzywne Konstrukcje Zewnętrzne",
-    "tap": "Dotknij, aby rozpocząć"
+    "tap": "Dotknij ekranu, aby rozpocząć"
   },
-  "nav": {
-    "brand": "Veranda Style"
+  "step1": {
+    "label": "Wybierz kategorię",
+    "title": "Nasze produkty"
   },
-  "steps": {
-    "back": "← Wstecz",
-    "continue": "Dalej →",
-    "sendQuote": "Wyślij i uzyskaj wycenę"
+  "step2": {
+    "label": "Wybierz produkt",
+    "title": "Modele"
   },
-  "stepLabels": [
-    "",
-    "Krok 1 z 7 — Wybór produktu",
-    "Krok 2 z 7 — Typ konstrukcji",
-    "Krok 3 z 7 — Materiał dachu",
-    "Krok 4 z 7 — Dodatkowe opcje",
-    "Krok 5 z 7 — Wymiary",
-    "Krok 6 z 7 — Szacunkowa cena",
-    "Krok 7 z 7 — Twoje dane"
-  ],
-  "step1": { "title": "Co chcesz skonfigurować?" },
-  "step2": { "title": "Jak będzie zamontowane?" },
-  "step3": { "title": "Wybierz materiał dachu" },
+  "step3": {
+    "label": "Produkt",
+    "askPrice": "Zapytaj o cenę",
+    "back": "Wróć do produktów"
+  },
   "step4": {
-    "title": "Dodaj opcje",
-    "optional": "opcjonalne — wybierz dowolne",
-    "noOptions": "Brak dodatkowych opcji dla tego produktu."
-  },
-  "step5": {
-    "title": "Wprowadź wymiary",
-    "width": "Szerokość",
-    "depth": "Głębokość",
-    "height": "Wysokość",
-    "tapHint": "Dotknij pole, aby wpisać wartość",
-    "hint": "Wszystkie wartości w milimetrach (mm)"
-  },
-  "step6": {
-    "title": "Szacunkowa cena",
-    "estimated": "Szacunkowa suma",
-    "range": "Zakres",
-    "disclaimer": "Cena orientacyjna. Ostateczny koszt zostanie potwierdzony po weryfikacji zdjęć, dokładnych pomiarów i miejsca montażu.",
-    "calculating": "Obliczanie...",
-    "error": "Nie można obliczyć ceny."
-  },
-  "step7": {
-    "title": "Podaj dane kontaktowe",
+    "label": "Zostaw dane — oddzwonimy",
+    "title": "Formularz kontaktowy",
     "name": "Imię i nazwisko",
     "phone": "Telefon",
-    "email": "E-mail",
     "city": "Miasto",
     "postcode": "Kod pocztowy",
-    "comment": "Komentarz",
-    "optional": "opcjonalne"
+    "comment": "Wymiary / komentarz",
+    "commentPlaceholder": "np. 5m × 4m, przyścienny...",
+    "optional": "(opcjonalnie)",
+    "submit": "Wyślij zapytanie"
   },
   "success": {
-    "title": "Zapytanie wysłane!",
-    "body": "Dziękujemy. Przygotujemy spersonalizowaną wycenę i skontaktujemy się z Tobą w ciągu 24 godzin.",
-    "phone": "Kontynuuj na telefonie",
-    "whatsapp": "💬 Kontynuuj na WhatsApp",
-    "restart": "← Zacznij od nowa"
-  },
-  "price": {
-    "baseStructure": "Podstawa",
-    "material": "Materiał",
-    "options": "Opcje"
-  },
-  "general": {
-    "submitError": "Błąd przesyłania. Spróbuj ponownie."
+    "title": "Dziękujemy!",
+    "subtitle": "Oddzwonimy do Ciebie wkrótce.",
+    "reset": "Wróć do strony głównej"
   }
 }
