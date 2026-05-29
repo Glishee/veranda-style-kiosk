@@ -16,6 +16,12 @@ import ContactStep from '@/components/kiosk/steps/ContactStep'
 const MAX_GALLERY_IMAGES = 5
 const LANGS: Lang[] = ['pl', 'en', 'de']
 
+const BACK_LABELS: Record<Lang, string> = {
+  pl: 'Wstecz',
+  en: 'Back',
+  de: 'Zurück',
+}
+
 interface Props {
   categories: CategoryRow[]
 }
@@ -37,7 +43,6 @@ export default function KioskClient({ categories }: Props) {
     ? (categories.find((c) => c.slug === previewCategorySlug) ?? null)
     : null
 
-  // Gallery images for left panel
   let panelImageUrls: string[] = []
   if (state.step === 1 && previewCategory) {
     panelImageUrls = previewCategory.products.slice(0, MAX_GALLERY_IMAGES).map((p) => p.imageUrl)
@@ -47,22 +52,26 @@ export default function KioskClient({ categories }: Props) {
     panelImageUrls = [firstProductOfCategory.imageUrl]
   }
 
-  // Left panel label
   const panelLabel =
     state.step >= 3 && selectedProduct
       ? selectedProduct.translations[state.lang]?.name ?? selectedProduct.slug
-    : state.step === 2 && selectedCategory
-      ? selectedCategory.translations[state.lang]?.name ?? selectedCategory.slug
-    : state.step === 1 && previewCategory
-      ? previewCategory.translations[state.lang]?.name ?? previewCategory.slug
-    : 'Veranda Styl'
+      : state.step === 2 && selectedCategory
+        ? selectedCategory.translations[state.lang]?.name ?? selectedCategory.slug
+        : state.step === 1 && previewCategory
+          ? previewCategory.translations[state.lang]?.name ?? previewCategory.slug
+          : 'Veranda Styl'
 
   const panelSublabel =
     state.step >= 3 && selectedCategory
       ? selectedCategory.translations[state.lang]?.name
-    : state.step === 2 && selectedCategory
-      ? selectedCategory.translations[state.lang]?.name
-    : undefined
+      : state.step === 2 && selectedCategory
+        ? selectedCategory.translations[state.lang]?.name
+        : undefined
+
+  function handleBack() {
+    resetTimer()
+    dispatch({ type: 'PREV_STEP' })
+  }
 
   async function handleSubmit() {
     if (!state.categorySlug || !state.productSlug) return
@@ -96,11 +105,11 @@ export default function KioskClient({ categories }: Props) {
   if (state.step === 5) return <SuccessScreen />
 
   const isContactStep = state.step === 4
+  const showBackButton = state.step > 1 && state.step < 5
   const isSubmitDisabled =
     submitting || !state.contact.name || !state.contact.phone ||
     !state.contact.city || !state.contact.postcode
 
-  // Shared header elements
   const logoImg = (
     <Image
       src="/logo.png"
@@ -111,17 +120,17 @@ export default function KioskClient({ categories }: Props) {
       style={{ height: '30px', width: 'auto' }}
     />
   )
+
   const langSwitcher = (
     <div className="flex gap-1">
       {LANGS.map((lang) => (
         <button
           key={lang}
           onClick={() => { resetTimer(); dispatch({ type: 'SET_LANG', lang }) }}
-          className={`text-[8px] md:text-[7px] tracking-[1px] border px-2 py-1 uppercase transition-all duration-150 active:scale-[0.95] min-h-[36px] min-w-[36px] ${
-            state.lang === lang
-              ? 'bg-[#111] text-white border-[#111]'
-              : 'text-[#999] border-[#ddd]'
-          }`}
+          className={`text-[8px] md:text-[7px] tracking-[1px] border px-2 py-1 uppercase transition-all duration-150 active:scale-[0.95] min-h-[36px] min-w-[36px] ${state.lang === lang
+            ? 'bg-[#111] text-white border-[#111]'
+            : 'text-[#999] border-[#ddd]'
+            }`}
         >
           {lang}
         </button>
@@ -130,35 +139,36 @@ export default function KioskClient({ categories }: Props) {
   )
 
   return (
-    /* Outer shell: vertical stack on mobile, fixed full-screen on desktop */
     <div className="flex flex-col w-full min-h-screen md:fixed md:inset-0 bg-[#f9f7f4]">
-
-      {/* ── Mobile-only header (above the image) ── */}
       <div className="md:hidden bg-white border-b border-[#e5e0d8] px-4 h-12 flex items-center justify-between flex-shrink-0">
         {logoImg}
         {langSwitcher}
       </div>
 
-      {/* ── Main content area ── */}
       <div className="flex flex-col flex-1 md:flex-row md:h-full md:overflow-hidden">
-
-        {/* Left panel — image gallery */}
         <LeftPanel
           imageUrls={panelImageUrls}
           label={panelLabel}
           sublabel={panelSublabel}
         />
 
-        {/* Right panel */}
         <div className="flex flex-col flex-1 md:overflow-hidden">
-
-          {/* Desktop-only header (inside right panel) */}
           <div className="hidden md:flex bg-white border-b border-[#e5e0d8] px-4 h-11 items-center justify-between flex-shrink-0">
             {logoImg}
             {langSwitcher}
           </div>
 
-          {/* Step content — scrollable, re-mounts on step change for fade animation */}
+          {showBackButton && (
+            <div className="px-4 pt-4 bg-[#f9f7f4]">
+              <button
+                onClick={handleBack}
+                className="inline-flex items-center gap-2 border border-[#ddd] bg-white px-4 py-3 text-[9px] font-extrabold tracking-[2px] uppercase text-[#111] transition-all duration-150 active:scale-[0.97]"
+              >
+                ← {BACK_LABELS[state.lang]}
+              </button>
+            </div>
+          )}
+
           <div key={state.step} className="flex-1 overflow-y-auto p-4 animate-step-enter">
             {state.step === 1 && (
               <CategoryStep
@@ -175,7 +185,6 @@ export default function KioskClient({ categories }: Props) {
             {state.step === 4 && <ContactStep />}
           </div>
 
-          {/* Footer — submit button, step 4 only */}
           {isContactStep && (
             <div className="border-t border-[#e5e0d8] bg-white p-3 flex-shrink-0 sticky bottom-0">
               <button

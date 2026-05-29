@@ -1,4 +1,5 @@
 'use client'
+
 import Image from 'next/image'
 import { useKiosk } from '@/context/KioskContext'
 import { useT } from '@/hooks/useT'
@@ -26,23 +27,22 @@ export function SplashScreen() {
           <button
             key={lang}
             onClick={() => dispatch({ type: 'SET_LANG', lang })}
-            className={`text-[10px] tracking-[2px] uppercase px-3 py-2 border transition-all min-h-[44px] min-w-[44px] ${
-              state.lang === lang
-                ? 'border-white/50 text-white'
-                : 'border-white/10 text-white/30'
-            }`}
+            className={`text-[10px] tracking-[2px] uppercase px-3 py-2 border transition-all min-h-[44px] min-w-[44px] ${state.lang === lang
+              ? 'border-white/50 text-white'
+              : 'border-white/10 text-white/30'
+              }`}
           >
             {lang.toUpperCase()}
           </button>
         ))}
       </div>
 
-      {/* Logo + tap prompt */}
+      {/* Logo + welcome */}
       <div className="relative z-10 flex flex-col items-center text-center px-8">
-        <div className="mb-10">
+        <div className="mb-8">
           <Image
             src="/logo.png"
-            alt="Veranda Styl"
+            alt="Veranda Style"
             width={280}
             height={148}
             priority
@@ -51,9 +51,21 @@ export function SplashScreen() {
           />
         </div>
 
-        <p className="text-[10px] tracking-[5px] text-white/30 uppercase mb-8">
+        {/* Welcome */}
+        <p className="text-[11px] md:text-[13px] tracking-[4px] uppercase text-white/70 mb-3">
+          {t.splash.welcome}
+        </p>
+
+        {/* Tagline */}
+        <p className="text-[10px] md:text-[12px] tracking-[3px] text-white/40 mb-10">
+          {t.splash.tagline}
+        </p>
+
+        {/* Tap prompt */}
+        <p className="text-[10px] tracking-[5px] text-white/30 uppercase mb-6">
           {t.splash.tap}
         </p>
+
         <p className="text-[11px] tracking-[3px] text-white/20 uppercase animate-pulse">
           ▸ &nbsp; {t.splash.tap} &nbsp; ◂
         </p>

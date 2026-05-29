@@ -1,6 +1,8 @@
 {
   "splash": {
-    "tap": "Dotknij ekranu, aby rozpocząć"
+    "tap": "Dotknij ekranu, aby rozpocząć",
+    "welcome": "Witamy w Veranda Style",
+    "tagline": "Przestrzeń. Design. Komfort."
   },
   "step1": {
     "label": "Wybierz kategorię",

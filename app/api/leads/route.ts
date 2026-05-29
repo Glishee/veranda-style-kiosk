@@ -17,6 +17,7 @@ const LeadSchema = z.object({
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null)
   const parsed = LeadSchema.safeParse(body)
+
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 })
   }
@@ -27,10 +28,22 @@ export async function POST(req: NextRequest) {
     data: { categorySlug, productSlug, name, phone, city, postcode, comment, lang },
   })
 
-  const resend = new Resend(process.env.RESEND_API_KEY)
-  await resend.emails.send({
-    from: 'kiosk@veranda-style.pl',
-    to: process.env.NOTIFICATION_EMAIL ?? '',
+  const resendApiKey = process.env.RESEND_API_KEY
+  const notificationEmail = process.env.NOTIFICATION_EMAIL ?? 'canopterrase@gmail.com'
+
+  if (!resendApiKey) {
+    console.error('RESEND ERROR: RESEND_API_KEY is missing')
+    return NextResponse.json(
+      { error: 'RESEND_API_KEY is missing' },
+      { status: 500 }
+    )
+  }
+
+  const resend = new Resend(resendApiKey)
+
+  const result = await resend.emails.send({
+    from: 'onboarding@resend.dev',
+    to: notificationEmail,
     subject: `Zapytanie — ${productSlug} — ${name} — ${city}`,
     html: `
       <h2>Nowe zapytanie z kiosku</h2>
@@ -40,10 +53,12 @@ export async function POST(req: NextRequest) {
       <p><strong>Telefon:</strong> ${phone}</p>
       <p><strong>Miasto:</strong> ${city}</p>
       <p><strong>Kod pocztowy:</strong> ${postcode}</p>
-      ${comment ? `<p><strong>Komentarz:</strong> ${comment}</p>` : ''}
+      ${comment ? `<p><strong>Konfiguracja / cena:</strong> ${comment}</p>` : ''}
       <p><strong>Język:</strong> ${lang}</p>
     `,
   })
 
-  return NextResponse.json({ ok: true }, { status: 201 })
+  console.log('RESEND RESULT:', result)
+
+  return NextResponse.json({ ok: true, email: result }, { status: 201 })
 }

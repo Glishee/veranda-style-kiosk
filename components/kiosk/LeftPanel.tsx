@@ -10,14 +10,14 @@ interface LeftPanelProps {
 const SLIDE_INTERVAL_MS = 3000
 
 const IMAGE_BG_POSITIONS: Record<string, string> = {
-  '/products/image1.png': 'center 22%',
-  '/products/image2.png': 'center 30%',
-  '/products/image4.png': 'center 30%',
-  '/products/image5.png': 'center 30%',
-  '/products/image6.png': 'center 30%',
-  '/products/image7.png': 'center 30%',
-  '/products/image8.png': 'center 30%',
-  '/products/image9.png': 'center 30%',
+  '/products/image1.png': 'center 35%',
+  '/products/image2.png': 'center 38%',
+  '/products/image4.png': 'center 42%',
+  '/products/image5.png': 'center 38%',
+  '/products/image6.png': 'center 38%',
+  '/products/image7.png': 'center 40%',
+  '/products/image8.png': 'center 38%',
+  '/products/image9.png': 'center 38%',
 }
 
 export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps) {
@@ -36,7 +36,7 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
   const hasImages = imageUrls.length > 0
 
   return (
-    <div className="relative w-full h-56 md:h-full md:w-[58%] md:flex-shrink-0 flex flex-col justify-end overflow-hidden bg-[#080c12]">
+    <div className="relative w-full h-64 md:h-full md:w-[58%] md:flex-shrink-0 flex flex-col justify-end overflow-hidden bg-[#080c12]">
 
       {hasImages ? (
         imageUrls.map((url, i) => (
