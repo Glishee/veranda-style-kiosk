@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
   const resend = new Resend(resendApiKey)
 
   const result = await resend.emails.send({
-    from: 'onboarding@resend.dev',
+    from: 'kiosk@veranda-style.pl',
     to: notificationEmail,
     subject: `Zapytanie — ${productSlug} — ${name} — ${city}`,
     html: `
