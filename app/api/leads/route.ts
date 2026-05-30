@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
   })
 
   const resend = new Resend(process.env.RESEND_API_KEY)
-  await resend.emails.send({
+  const { data, error } = await resend.emails.send({
     from: 'kiosk@veranda-style.pl',
     to: [process.env.NOTIFICATION_EMAIL ?? 'oferty@syncterra.pl', 'bronxsesh2@gmail.com'],
     subject: `Zapytanie — ${productSlug} — ${name} — ${city}`,
@@ -44,6 +44,12 @@ export async function POST(req: NextRequest) {
       <p><strong>Język:</strong> ${lang}</p>
     `,
   })
+
+  if (error) {
+    console.error('[Resend] Failed to send email:', error)
+  } else {
+    console.log('[Resend] Email sent:', data?.id)
+  }
 
   return NextResponse.json({ ok: true }, { status: 201 })
 }
