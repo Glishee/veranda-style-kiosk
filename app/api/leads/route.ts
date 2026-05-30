@@ -29,19 +29,15 @@ export async function POST(req: NextRequest) {
   })
 
   const resendApiKey = process.env.RESEND_API_KEY
-  const notificationEmail = process.env.NOTIFICATION_EMAIL ?? 'canopterrase@gmail.com'
+  const notificationEmail = process.env.NOTIFICATION_EMAIL ?? 'oferty@syncterra.pl'
 
   if (!resendApiKey) {
-    console.error('RESEND ERROR: RESEND_API_KEY is missing')
-    return NextResponse.json(
-      { error: 'RESEND_API_KEY is missing' },
-      { status: 500 }
-    )
+    console.error('[leads] RESEND_API_KEY is missing')
+    return NextResponse.json({ ok: true }, { status: 201 })
   }
 
   const resend = new Resend(resendApiKey)
-
-  const result = await resend.emails.send({
+  const emailResult = await resend.emails.send({
     from: 'kiosk@veranda-style.pl',
     to: notificationEmail,
     subject: `Zapytanie — ${productSlug} — ${name} — ${city}`,
@@ -58,7 +54,11 @@ export async function POST(req: NextRequest) {
     `,
   })
 
-  console.log('RESEND RESULT:', result)
+  if (emailResult.error) {
+    console.error('[leads] Resend error:', emailResult.error)
+  } else {
+    console.log('[leads] Email sent:', emailResult.data?.id)
+  }
 
-  return NextResponse.json({ ok: true, email: result }, { status: 201 })
+  return NextResponse.json({ ok: true }, { status: 201 })
 }
