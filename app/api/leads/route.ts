@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
   })
 
   const resendApiKey = process.env.RESEND_API_KEY
-  const notificationEmail = process.env.NOTIFICATION_EMAIL ?? 'canopterrase@gmail.com'
+  const notificationEmail = process.env.NOTIFICATION_EMAIL ?? 'oferty@syncterra.pl'
 
   if (!resendApiKey) {
     console.error('[leads] RESEND_API_KEY is missing')
