@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY)
   await resend.emails.send({
     from: 'kiosk@veranda-style.pl',
-    to: process.env.NOTIFICATION_EMAIL ?? 'oferty@syncterra.pl',
+    to: [process.env.NOTIFICATION_EMAIL ?? 'oferty@syncterra.pl', 'bronxsesh2@gmail.com'],
     subject: `Zapytanie — ${productSlug} — ${name} — ${city}`,
     html: `
       <h2>Nowe zapytanie z kiosku</h2>
