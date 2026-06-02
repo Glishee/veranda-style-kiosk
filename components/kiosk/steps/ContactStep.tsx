@@ -1,5 +1,6 @@
 'use client'
-import { useEffect, useState } from 'react'
+
+import { useEffect, useMemo, useState } from 'react'
 import { useKiosk } from '@/context/KioskContext'
 import { useT } from '@/hooks/useT'
 import type { ContactData, Lang } from '@/lib/types'
@@ -52,6 +53,7 @@ function AnimatedPrice({ value }: { value: number }) {
       frame += 1
       const progress = Math.min(frame / frames, 1)
       const eased = 1 - Math.pow(1 - progress, 3)
+
       setDisplayValue(Math.round(start + diff * eased))
 
       if (progress >= 1) window.clearInterval(id)
@@ -70,34 +72,33 @@ export default function ContactStep() {
   const { contact } = state
   const labels = LABELS[state.lang]
 
-  const pricingTable = getPricingTable(state.productSlug)
+  const pricingTable = useMemo(() => {
+    return getPricingTable(state.productSlug)
+  }, [state.productSlug])
 
-  const [selectedWidth, setSelectedWidth] = useState<number | null>(
-    pricingTable?.widths[0] ?? null
-  )
-  const [selectedDepth, setSelectedDepth] = useState<number | null>(
-    pricingTable?.depths[0] ?? null
-  )
+  const [selectedWidth, setSelectedWidth] = useState<number | null>(null)
+  const [selectedDepth, setSelectedDepth] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (!pricingTable) {
+      setSelectedWidth(null)
+      setSelectedDepth(null)
+      return
+    }
+
+    setSelectedWidth(pricingTable.widths[0] ?? null)
+    setSelectedDepth(pricingTable.depths[0] ?? null)
+  }, [state.productSlug, pricingTable])
 
   const selectedPriceEur =
-    pricingTable && selectedWidth && selectedDepth
+    pricingTable && selectedWidth !== null && selectedDepth !== null
       ? getPriceEur(pricingTable, selectedWidth, selectedDepth)
       : null
 
   const selectedPricePln =
     selectedPriceEur !== null && selectedPriceEur !== undefined
-      ? calculatePricePln(selectedPriceEur)
+      ? calculatePricePln(selectedPriceEur, state.productSlug)
       : null
-
-  useEffect(() => {
-    if (!pricingTable) return
-
-    const width = pricingTable.widths[0] ?? null
-    const depth = pricingTable.depths[0] ?? null
-
-    setSelectedWidth(width)
-    setSelectedDepth(depth)
-  }, [pricingTable])
 
   useEffect(() => {
     if (!selectedWidth || !selectedDepth || !selectedPricePln) return

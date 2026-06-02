@@ -1,5 +1,15 @@
 export const EUR_TO_PLN = 4.3
 export const PRICE_MULTIPLIER = 2
+export const SPECIAL_PRICE_MULTIPLIER = 1.5
+export const MAX_DEPTH_CM = 500
+
+const SPECIAL_MULTIPLIER_PRODUCTS = [
+    'carport',
+    'prime',
+    'dynamic',
+    'advanced',
+    'adaptive',
+]
 
 export type PricingTable = {
     widths: number[]
@@ -8,9 +18,15 @@ export type PricingTable = {
 }
 
 function byWidthRows(widths: number[], depths: number[], rows: number[][]): PricingTable {
-    const prices = depths.map((_, depthIndex) =>
-        widths.map((_, widthIndex) => rows[widthIndex]?.[depthIndex] ?? 0)
-    )
+    const prices = depths.map((_, depthIndex) => {
+        let highestPrice = 0
+
+        return widths.map((_, widthIndex) => {
+            const price = rows[widthIndex]?.[depthIndex] ?? 0
+            highestPrice = Math.max(highestPrice, price)
+            return highestPrice
+        })
+    })
 
     return { widths, depths, prices }
 }
@@ -218,11 +234,33 @@ export function normalizeProductSlug(slug?: string | null) {
 }
 
 export function getPricingTable(productSlug?: string | null) {
-    return PRICING_TABLES[normalizeProductSlug(productSlug)] ?? null
+    const table = PRICING_TABLES[normalizeProductSlug(productSlug)]
+    if (!table) return null
+
+    const allowedDepthIndexes = table.depths
+        .map((depth, index) => ({ depth, index }))
+        .filter((item) => item.depth <= MAX_DEPTH_CM)
+
+    return {
+        widths: table.widths,
+        depths: allowedDepthIndexes.map((item) => item.depth),
+        prices: allowedDepthIndexes.map((item) => table.prices[item.index]),
+    }
 }
 
-export function calculatePricePln(eur: number) {
-    return Math.round(eur * PRICE_MULTIPLIER * EUR_TO_PLN)
+export function getPriceMultiplier(productSlug?: string | null) {
+    const normalizedSlug = normalizeProductSlug(productSlug)
+
+    return SPECIAL_MULTIPLIER_PRODUCTS.includes(normalizedSlug)
+        ? SPECIAL_PRICE_MULTIPLIER
+        : PRICE_MULTIPLIER
+}
+
+export function calculatePricePln(eur: number, productSlug?: string | null) {
+    const priceInPln = eur * EUR_TO_PLN
+    const finalPrice = priceInPln * getPriceMultiplier(productSlug)
+
+    return Math.round(finalPrice)
 }
 
 export function getPriceEur(table: PricingTable, width: number, depth: number) {
