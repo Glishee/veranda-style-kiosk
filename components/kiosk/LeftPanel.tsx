@@ -84,20 +84,20 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
       ) : (
         <div className="absolute inset-0 overflow-hidden bg-gradient-to-br from-[#07101a] via-[#10284a] to-[#040404]">
           <div className="absolute inset-0 opacity-[0.07]">
-            <div className="absolute top-[18%] left-[8%] w-[260px] h-px bg-white" />
-            <div className="absolute top-[43%] left-[5%] w-[360px] h-px bg-white" />
-            <div className="absolute top-[72%] left-[8%] w-[320px] h-px bg-white" />
+            <div className="absolute top-[18%] left-[8%] w-[260px] h-px bg-white animate-[pulse_5s_ease-in-out_infinite]" />
+            <div className="absolute top-[43%] left-[5%] w-[360px] h-px bg-white animate-[pulse_7s_ease-in-out_infinite]" />
+            <div className="absolute top-[72%] left-[8%] w-[320px] h-px bg-white animate-[pulse_6s_ease-in-out_infinite]" />
 
-            <div className="absolute left-[18%] top-[12%] h-[220px] w-px bg-white" />
-            <div className="absolute left-[50%] top-[10%] h-[260px] w-px bg-white" />
-            <div className="absolute left-[76%] top-[12%] h-[220px] w-px bg-white" />
+            <div className="absolute left-[18%] top-[12%] h-[220px] w-px bg-white animate-[pulse_6s_ease-in-out_infinite]" />
+            <div className="absolute left-[50%] top-[10%] h-[260px] w-px bg-white animate-[pulse_8s_ease-in-out_infinite]" />
+            <div className="absolute left-[76%] top-[12%] h-[220px] w-px bg-white animate-[pulse_5s_ease-in-out_infinite]" />
           </div>
 
-          <div className="absolute left-1/2 top-1/2 w-[360px] md:w-[500px] h-[360px] md:h-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#1d4d8d] opacity-[0.10] blur-3xl" />
+          <div className="absolute left-1/2 top-1/2 w-[360px] md:w-[500px] h-[360px] md:h-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#1d4d8d] opacity-[0.10] blur-3xl animate-[pulse_6s_ease-in-out_infinite]" />
 
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-5 md:px-8">
             <div className="w-full max-w-md">
-              <h2 className="text-2xl md:text-5xl font-light text-white tracking-[5px] md:tracking-[6px]">
+              <h2 className="text-2xl md:text-5xl font-light text-white tracking-[5px] md:tracking-[6px] animate-[pulse_5s_ease-in-out_infinite]">
                 {intro.title}
               </h2>
 
@@ -108,22 +108,28 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
               <div className="w-full h-px bg-white/10 my-5 md:my-8" />
 
               <div className="grid grid-cols-3 gap-2 md:gap-4">
-                <div>
-                  <div className="text-xl md:text-4xl font-bold text-white">25+</div>
+                <div className="group">
+                  <div className="text-xl md:text-4xl font-bold text-white transition-all duration-700 animate-[pulse_3.8s_ease-in-out_infinite]">
+                    25+
+                  </div>
                   <div className="text-[7px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
                     {intro.years}
                   </div>
                 </div>
 
-                <div>
-                  <div className="text-xl md:text-4xl font-bold text-white">5000+</div>
+                <div className="group">
+                  <div className="text-xl md:text-4xl font-bold text-white transition-all duration-700 animate-[pulse_4.4s_ease-in-out_infinite]">
+                    5000+
+                  </div>
                   <div className="text-[7px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
                     {intro.projects}
                   </div>
                 </div>
 
-                <div>
-                  <div className="text-xl md:text-4xl font-bold text-white">EU</div>
+                <div className="group">
+                  <div className="text-xl md:text-4xl font-bold text-white transition-all duration-700 animate-[pulse_5s_ease-in-out_infinite]">
+                    EU
+                  </div>
                   <div className="text-[7px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
                     {intro.quality}
                   </div>
