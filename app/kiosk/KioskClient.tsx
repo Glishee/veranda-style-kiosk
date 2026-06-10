@@ -1,4 +1,5 @@
 'use client'
+
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useKiosk } from '@/context/KioskContext'
@@ -39,11 +40,13 @@ export default function KioskClient({ categories }: Props) {
   const selectedCategory = categories.find((c) => c.slug === state.categorySlug) ?? null
   const selectedProduct = selectedCategory?.products.find((p) => p.slug === state.productSlug) ?? null
   const firstProductOfCategory = selectedCategory?.products[0] ?? null
-  const previewCategory = state.step === 1
-    ? (categories.find((c) => c.slug === previewCategorySlug) ?? null)
-    : null
+  const previewCategory =
+    state.step === 1
+      ? categories.find((c) => c.slug === previewCategorySlug) ?? null
+      : null
 
   let panelImageUrls: string[] = []
+
   if (state.step === 1 && previewCategory) {
     panelImageUrls = previewCategory.products.slice(0, MAX_GALLERY_IMAGES).map((p) => p.imageUrl)
   } else if (state.step >= 3 && selectedProduct) {
@@ -75,11 +78,14 @@ export default function KioskClient({ categories }: Props) {
 
   async function handleSubmit() {
     if (!state.categorySlug || !state.productSlug) return
+    if (!state.captchaVerified) return
+
     const { name, phone, city, postcode, comment } = state.contact
     if (!name || !phone || !city || !postcode) return
 
     setSubmitting(true)
     resetTimer()
+
     try {
       const res = await fetch('/api/leads', {
         method: 'POST',
@@ -95,6 +101,7 @@ export default function KioskClient({ categories }: Props) {
           lang: state.lang,
         }),
       })
+
       if (res.ok) dispatch({ type: 'NEXT_STEP' })
     } finally {
       setSubmitting(false)
@@ -106,9 +113,14 @@ export default function KioskClient({ categories }: Props) {
 
   const isContactStep = state.step === 4
   const showBackButton = state.step > 1 && state.step < 5
+
   const isSubmitDisabled =
-    submitting || !state.contact.name || !state.contact.phone ||
-    !state.contact.city || !state.contact.postcode
+    submitting ||
+    !state.contact.name ||
+    !state.contact.phone ||
+    !state.contact.city ||
+    !state.contact.postcode ||
+    !state.captchaVerified
 
   const logoImg = (
     <Image
@@ -126,7 +138,10 @@ export default function KioskClient({ categories }: Props) {
       {LANGS.map((lang) => (
         <button
           key={lang}
-          onClick={() => { resetTimer(); dispatch({ type: 'SET_LANG', lang }) }}
+          onClick={() => {
+            resetTimer()
+            dispatch({ type: 'SET_LANG', lang })
+          }}
           className={`text-[8px] md:text-[7px] tracking-[1px] border px-2 py-1 uppercase transition-all duration-150 active:scale-[0.95] min-h-[36px] min-w-[36px] ${state.lang === lang
             ? 'bg-[#111] text-white border-[#111]'
             : 'text-[#999] border-[#ddd]'
@@ -176,12 +191,15 @@ export default function KioskClient({ categories }: Props) {
                 onPreview={setPreviewCategorySlug}
               />
             )}
+
             {state.step === 2 && selectedCategory && (
               <SubcategoryStep products={selectedCategory.products} />
             )}
+
             {state.step === 3 && selectedProduct && (
               <ProductDetailStep product={selectedProduct} />
             )}
+
             {state.step === 4 && <ContactStep />}
           </div>
 

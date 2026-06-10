@@ -1,6 +1,7 @@
 'use client'
+
 import { createContext, useContext, useReducer, useCallback, useRef, useEffect, type ReactNode } from 'react'
-import type { ConfiguratorState, ConfiguratorAction, Lang } from '@/lib/types'
+import type { ConfiguratorState, ConfiguratorAction } from '@/lib/types'
 
 const INITIAL_CONTACT = { name: '', phone: '', city: '', postcode: '', comment: '' }
 
@@ -10,27 +11,54 @@ const INITIAL_STATE: ConfiguratorState = {
   categorySlug: null,
   productSlug: null,
   contact: INITIAL_CONTACT,
+  captchaVerified: false,
 }
 
 export function reducer(state: ConfiguratorState, action: ConfiguratorAction): ConfiguratorState {
   switch (action.type) {
     case 'START':
       return { ...state, step: 1 }
+
     case 'SET_LANG':
       if (state.step === 0) return { ...state, lang: action.lang }
       return { ...INITIAL_STATE, lang: action.lang, step: 1 }
+
     case 'SET_CATEGORY':
-      return { ...state, step: 2, categorySlug: action.slug, productSlug: null }
+      return {
+        ...state,
+        step: 2,
+        categorySlug: action.slug,
+        productSlug: null,
+        captchaVerified: false,
+      }
+
     case 'SET_PRODUCT':
-      return { ...state, step: 3, productSlug: action.slug }
+      return {
+        ...state,
+        step: 3,
+        productSlug: action.slug,
+        captchaVerified: false,
+      }
+
     case 'NEXT_STEP':
       return { ...state, step: Math.min(state.step + 1, 5) }
+
     case 'PREV_STEP':
-      return { ...state, step: Math.max(state.step - 1, 1) }
+      return {
+        ...state,
+        step: Math.max(state.step - 1, 1),
+        captchaVerified: false,
+      }
+
     case 'SET_CONTACT':
       return { ...state, contact: { ...state.contact, [action.field]: action.value } }
+
+    case 'SET_CAPTCHA_VERIFIED':
+      return { ...state, captchaVerified: action.value }
+
     case 'RESET':
       return INITIAL_STATE
+
     default:
       return state
   }
@@ -59,7 +87,9 @@ export function KioskProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     resetTimer()
-    return () => { if (timerRef.current) clearTimeout(timerRef.current) }
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
   }, [resetTimer])
 
   return (

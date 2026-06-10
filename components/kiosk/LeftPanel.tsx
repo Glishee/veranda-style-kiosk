@@ -1,4 +1,5 @@
 'use client'
+
 import { useState, useEffect } from 'react'
 
 interface LeftPanelProps {
@@ -23,13 +24,17 @@ const IMAGE_BG_POSITIONS: Record<string, string> = {
 export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  useEffect(() => { setCurrentIndex(0) }, [imageUrls])
+  useEffect(() => {
+    setCurrentIndex(0)
+  }, [imageUrls])
 
   useEffect(() => {
     if (imageUrls.length <= 1) return
+
     const id = setInterval(() => {
       setCurrentIndex((i) => (i + 1) % imageUrls.length)
     }, SLIDE_INTERVAL_MS)
+
     return () => clearInterval(id)
   }, [imageUrls.length])
 
@@ -37,7 +42,6 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
 
   return (
     <div className="relative w-full h-64 md:h-full md:w-[58%] md:flex-shrink-0 flex flex-col justify-end overflow-hidden bg-[#080c12]">
-
       {hasImages ? (
         imageUrls.map((url, i) => (
           <div
@@ -51,52 +55,126 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
           />
         ))
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0a1a2a] via-[#1a3050] to-[#0d1a28]">
-          <div className="absolute inset-0 flex items-center justify-center opacity-15">
-            <svg viewBox="0 0 200 140" width="280" fill="none">
-              <polygon points="5,65 100,20 195,65" fill="#4a9abf" opacity="0.6" />
-              <rect x="15" y="65" width="6" height="65" fill="#4a9abf" opacity="0.5" />
-              <rect x="179" y="65" width="6" height="65" fill="#4a9abf" opacity="0.5" />
-              <rect x="5" y="62" width="190" height="6" fill="#4a9abf" opacity="0.4" />
-            </svg>
+        <div className="absolute inset-0 overflow-hidden bg-gradient-to-br from-[#07101a] via-[#10284a] to-[#040404]">
+          <div className="absolute inset-0 opacity-[0.06]">
+            <div className="absolute top-[15%] left-[10%] w-[300px] h-px bg-white" />
+            <div className="absolute top-[25%] left-[25%] w-[220px] h-px bg-white" />
+            <div className="absolute top-[40%] left-[5%] w-[420px] h-px bg-white" />
+            <div className="absolute top-[60%] left-[20%] w-[260px] h-px bg-white" />
+
+            <div className="absolute left-[20%] top-[10%] h-[280px] w-px bg-white" />
+            <div className="absolute left-[50%] top-[20%] h-[320px] w-px bg-white" />
+            <div className="absolute left-[70%] top-[15%] h-[220px] w-px bg-white" />
+          </div>
+
+          <div className="absolute left-1/2 top-1/2 w-[500px] h-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#1d4d8d] opacity-[0.08] blur-3xl" />
+
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-8">
+            <div className="w-full max-w-md">
+              <p className="text-[11px] md:text-[12px] tracking-[5px] uppercase text-white/40 mb-3">
+                Veranda Styl
+              </p>
+
+              <h2 className="text-3xl md:text-5xl font-light text-white tracking-[6px]">
+                PREMIUM
+              </h2>
+
+              <h3 className="text-lg md:text-xl text-white/60 tracking-[4px] uppercase mt-2">
+                Outdoor Structures
+              </h3>
+
+              <div className="w-full h-px bg-white/10 my-8" />
+
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <div className="text-2xl md:text-4xl font-bold text-white">
+                    25+
+                  </div>
+                  <div className="text-[8px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
+                    Years
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-2xl md:text-4xl font-bold text-white">
+                    5000+
+                  </div>
+                  <div className="text-[8px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
+                    Projects
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-2xl md:text-4xl font-bold text-white">
+                    EU
+                  </div>
+                  <div className="text-[8px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
+                    Quality
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full h-px bg-white/10 my-8" />
+
+              <div className="flex flex-wrap justify-center gap-2 text-[9px] md:text-[10px] uppercase tracking-[2px] text-white/50">
+                <span>VS Solid</span>
+                <span>•</span>
+                <span>VS Bold</span>
+                <span>•</span>
+                <span>VS Cube</span>
+                <span>•</span>
+                <span>VS Prime</span>
+                <span>•</span>
+                <span>VS Dynamic</span>
+                <span>•</span>
+                <span>VS Advanced</span>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
-      <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/85 to-transparent" />
+      {hasImages && (
+        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/85 to-transparent" />
+      )}
 
-      <div className="relative z-10 p-4 md:p-6">
-        {sublabel && (
-          <p className="hidden md:block text-[8px] tracking-[3px] uppercase text-white/40 mb-1">
-            {sublabel}
+      {hasImages && (
+        <div className="relative z-10 p-4 md:p-6">
+          {sublabel && (
+            <p className="hidden md:block text-[8px] tracking-[3px] uppercase text-white/40 mb-1">
+              {sublabel}
+            </p>
+          )}
+
+          <h2 className="text-sm md:text-xl font-extrabold tracking-wide text-white leading-tight">
+            {label}
+          </h2>
+
+          <p className="hidden md:block text-[10px] text-white/35 tracking-wide mt-1">
+            Premium Outdoor Structures · Poland
           </p>
-        )}
-        <h2 className="text-sm md:text-xl font-extrabold tracking-wide text-white leading-tight">
-          {label}
-        </h2>
-        <p className="hidden md:block text-[10px] text-white/35 tracking-wide mt-1">
-          Premium Outdoor Structures · Poland
-        </p>
 
-        {imageUrls.length > 1 && (
-          <div className="flex items-center gap-1.5 mt-2 md:mt-3">
-            {imageUrls.map((_, i) => (
-              <div
-                key={i}
-                className="rounded-full transition-all duration-500"
-                style={{
-                  width: '7px',
-                  height: '7px',
-                  backgroundColor: i === currentIndex
-                    ? 'rgba(255,255,255,0.95)'
-                    : 'rgba(255,255,255,0.3)',
-                  transform: i === currentIndex ? 'scale(1.2)' : 'scale(1)',
-                }}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+          {imageUrls.length > 1 && (
+            <div className="flex items-center gap-1.5 mt-2 md:mt-3">
+              {imageUrls.map((_, i) => (
+                <div
+                  key={i}
+                  className="rounded-full transition-all duration-500"
+                  style={{
+                    width: '7px',
+                    height: '7px',
+                    backgroundColor:
+                      i === currentIndex
+                        ? 'rgba(255,255,255,0.95)'
+                        : 'rgba(255,255,255,0.3)',
+                    transform: i === currentIndex ? 'scale(1.2)' : 'scale(1)',
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

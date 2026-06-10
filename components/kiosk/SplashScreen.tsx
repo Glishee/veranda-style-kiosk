@@ -1,26 +1,67 @@
 'use client'
 
 import Image from 'next/image'
+import { useState } from 'react'
 import { useKiosk } from '@/context/KioskContext'
 import { useT } from '@/hooks/useT'
 import type { Lang } from '@/lib/types'
 
 const LANGS: Lang[] = ['pl', 'en', 'de']
 
+const COOKIE_LABELS: Record<Lang, {
+  title: string
+  body: string
+  accept: string
+}> = {
+  pl: {
+    title: 'Prywatność i pliki cookies',
+    body: 'Korzystając z konfiguratora, akceptujesz użycie niezbędnych plików cookies oraz przetwarzanie danych formularza w celu przygotowania oferty.',
+    accept: 'Akceptuję',
+  },
+  en: {
+    title: 'Privacy and cookies',
+    body: 'By using this configurator, you accept essential cookies and the processing of form data to prepare your offer.',
+    accept: 'I accept',
+  },
+  de: {
+    title: 'Datenschutz und Cookies',
+    body: 'Durch die Nutzung dieses Konfigurators akzeptieren Sie notwendige Cookies und die Verarbeitung der Formulardaten zur Angebotserstellung.',
+    accept: 'Akzeptieren',
+  },
+}
+
 export function SplashScreen() {
   const { state, dispatch } = useKiosk()
   const t = useT()
+  const [cookiesAccepted, setCookiesAccepted] = useState(false)
+
+  const cookie = COOKIE_LABELS[state.lang]
+
+  function handleStart() {
+    if (!cookiesAccepted) return
+    dispatch({ type: 'START' })
+  }
+
+  function handleAcceptCookies() {
+    setCookiesAccepted(true)
+  }
 
   return (
     <div
-      className="fixed inset-0 z-20 bg-[#080c12] flex flex-col items-center justify-center cursor-pointer"
-      onClick={() => dispatch({ type: 'START' })}
+      className={`fixed inset-0 z-20 bg-[#080c12] flex flex-col items-center justify-center transition-all duration-300 ${cookiesAccepted ? 'cursor-pointer' : 'cursor-default'
+        }`}
+      onClick={handleStart}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-[#0d1520] to-[#050505]" />
 
+      <div className="absolute inset-0 opacity-[0.08]">
+        <div className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/30" />
+        <div className="absolute left-1/2 top-1/2 h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/20" />
+      </div>
+
       {/* Language switcher */}
       <div
-        className="absolute top-4 right-4 flex gap-2 z-10"
+        className="absolute top-4 right-4 flex gap-2 z-20"
         onClick={(e) => e.stopPropagation()}
       >
         {LANGS.map((lang) => (
@@ -51,24 +92,54 @@ export function SplashScreen() {
           />
         </div>
 
-        {/* Welcome */}
         <p className="text-[11px] md:text-[13px] tracking-[4px] uppercase text-white/70 mb-3">
           {t.splash.welcome}
         </p>
 
-        {/* Tagline */}
         <p className="text-[10px] md:text-[12px] tracking-[3px] text-white/40 mb-10">
           {t.splash.tagline}
         </p>
 
-        {/* Tap prompt */}
-        <p className="text-[10px] tracking-[5px] text-white/30 uppercase mb-6">
-          {t.splash.tap}
-        </p>
+        {cookiesAccepted ? (
+          <>
+            <p className="text-[10px] tracking-[5px] text-white/30 uppercase mb-6">
+              {t.splash.tap}
+            </p>
 
-        <p className="text-[11px] tracking-[3px] text-white/20 uppercase animate-pulse">
-          ▸ &nbsp; {t.splash.tap} &nbsp; ◂
-        </p>
+            <p className="text-[11px] tracking-[3px] text-white/20 uppercase animate-pulse">
+              ▸ &nbsp; {t.splash.tap} &nbsp; ◂
+            </p>
+          </>
+        ) : (
+          <div
+            className="w-full max-w-[420px] border border-white/10 bg-white/[0.06] backdrop-blur-md p-4 md:p-5 text-left shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-white/15 bg-white/10 text-white">
+                ◇
+              </div>
+
+              <div className="flex-1">
+                <p className="text-[9px] tracking-[3px] uppercase text-white/70 mb-2">
+                  {cookie.title}
+                </p>
+
+                <p className="text-[10px] md:text-[11px] leading-relaxed text-white/40">
+                  {cookie.body}
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleAcceptCookies}
+              className="mt-4 w-full min-h-[46px] bg-white text-[#111] text-[9px] font-extrabold tracking-[2px] uppercase transition-all duration-200 active:scale-[0.98]"
+            >
+              {cookie.accept} →
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

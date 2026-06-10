@@ -26,11 +26,12 @@ export interface ContactData {
 }
 
 export interface ConfiguratorState {
-  step: number  // 0=splash 1=categories 2=products 3=detail 4=contact 5=success
+  step: number
   lang: Lang
   categorySlug: string | null
   productSlug: string | null
   contact: ContactData
+  captchaVerified: boolean
 }
 
 export type ConfiguratorAction =
@@ -39,6 +40,7 @@ export type ConfiguratorAction =
   | { type: 'SET_CATEGORY'; slug: string }
   | { type: 'SET_PRODUCT'; slug: string }
   | { type: 'SET_CONTACT'; field: keyof ContactData; value: string }
+  | { type: 'SET_CAPTCHA_VERIFIED'; value: boolean }
   | { type: 'NEXT_STEP' }
   | { type: 'PREV_STEP' }
   | { type: 'RESET' }

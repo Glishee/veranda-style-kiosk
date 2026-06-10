@@ -13,6 +13,9 @@ const LABELS: Record<Lang, {
   noPrice: string
   currency: string
   withoutAssembly: string
+  captchaTitle: string
+  captchaIdle: string
+  captchaDone: string
 }> = {
   pl: {
     width: 'Szerokość konstrukcji',
@@ -21,6 +24,9 @@ const LABELS: Record<Lang, {
     noPrice: 'Brak ceny dla tej konfiguracji',
     currency: 'PLN',
     withoutAssembly: 'Cena bez montażu',
+    captchaTitle: 'Potwierdzenie',
+    captchaIdle: 'Przesuń, aby potwierdzić',
+    captchaDone: 'Potwierdzono',
   },
   en: {
     width: 'Construction width',
@@ -29,6 +35,9 @@ const LABELS: Record<Lang, {
     noPrice: 'No price for this configuration',
     currency: 'PLN',
     withoutAssembly: 'Price without installation',
+    captchaTitle: 'Verification',
+    captchaIdle: 'Slide to verify',
+    captchaDone: 'Verified',
   },
   de: {
     width: 'Konstruktionsbreite',
@@ -37,6 +46,9 @@ const LABELS: Record<Lang, {
     noPrice: 'Kein Preis für diese Konfiguration',
     currency: 'PLN',
     withoutAssembly: 'Preis ohne Montage',
+    captchaTitle: 'Bestätigung',
+    captchaIdle: 'Zum Bestätigen schieben',
+    captchaDone: 'Bestätigt',
   },
 }
 
@@ -64,6 +76,70 @@ function AnimatedPrice({ value }: { value: number }) {
   }, [value])
 
   return <>{displayValue.toLocaleString('pl-PL')}</>
+}
+
+function SlideCaptcha({
+  verified,
+  label,
+  doneLabel,
+  onVerify,
+}: {
+  verified: boolean
+  label: string
+  doneLabel: string
+  onVerify: () => void
+}) {
+  const [progress, setProgress] = useState(verified ? 100 : 0)
+
+  useEffect(() => {
+    setProgress(verified ? 100 : 0)
+  }, [verified])
+
+  function handleClick() {
+    if (verified) return
+
+    setProgress(100)
+    window.setTimeout(() => {
+      onVerify()
+    }, 180)
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      disabled={verified}
+      className={`relative w-full overflow-hidden border border-[#e5e0d8] min-h-[54px] transition-all duration-300 ${verified ? 'bg-[#111] text-white' : 'bg-white text-[#111] active:scale-[0.99]'
+        }`}
+    >
+      <div
+        className="absolute inset-y-0 left-0 bg-[#111] transition-all duration-500"
+        style={{ width: `${progress}%` }}
+      />
+
+      <div className="relative z-10 flex items-center justify-between px-3">
+        <span
+          className={`flex h-9 w-9 items-center justify-center border text-[14px] font-extrabold transition-all duration-300 ${verified
+            ? 'border-white/25 bg-white text-[#111]'
+            : 'border-[#e5e0d8] bg-[#f9f7f4] text-[#111]'
+            }`}
+        >
+          {verified ? '✓' : '→'}
+        </span>
+
+        <span
+          className={`text-[9px] font-extrabold tracking-[2px] uppercase transition-all duration-300 ${verified ? 'text-white' : 'text-[#111]'
+            }`}
+        >
+          {verified ? doneLabel : label}
+        </span>
+
+        <span className={`text-[13px] transition-all duration-300 ${verified ? 'text-white/60' : 'text-gray-300'}`}>
+          {verified ? '✓' : '›'}
+        </span>
+      </div>
+    </button>
+  )
 }
 
 export default function ContactStep() {
@@ -118,11 +194,18 @@ export default function ContactStep() {
   function handleWidthSelect(width: number) {
     resetTimer()
     setSelectedWidth(width)
+    dispatch({ type: 'SET_CAPTCHA_VERIFIED', value: false })
   }
 
   function handleDepthSelect(depth: number) {
     resetTimer()
     setSelectedDepth(depth)
+    dispatch({ type: 'SET_CAPTCHA_VERIFIED', value: false })
+  }
+
+  function handleCaptchaVerify() {
+    resetTimer()
+    dispatch({ type: 'SET_CAPTCHA_VERIFIED', value: true })
   }
 
   return (
@@ -261,6 +344,19 @@ export default function ContactStep() {
           </div>
         </div>
       )}
+
+      <div className="mt-2">
+        <p className="text-[7px] tracking-[2px] uppercase text-gray-400 mb-2">
+          {labels.captchaTitle}
+        </p>
+
+        <SlideCaptcha
+          verified={state.captchaVerified}
+          label={labels.captchaIdle}
+          doneLabel={labels.captchaDone}
+          onVerify={handleCaptchaVerify}
+        />
+      </div>
     </div>
   )
 }
