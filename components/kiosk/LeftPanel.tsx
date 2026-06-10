@@ -41,7 +41,7 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
   const hasImages = imageUrls.length > 0
 
   return (
-    <div className="relative w-full h-64 md:h-full md:w-[58%] md:flex-shrink-0 flex flex-col justify-end overflow-hidden bg-[#080c12]">
+    <div className="relative w-full h-56 md:h-full md:w-[58%] md:flex-shrink-0 flex flex-col justify-end overflow-hidden bg-[#080c12]">
       {hasImages ? (
         imageUrls.map((url, i) => (
           <div
@@ -56,67 +56,66 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
         ))
       ) : (
         <div className="absolute inset-0 overflow-hidden bg-gradient-to-br from-[#07101a] via-[#10284a] to-[#040404]">
-          <div className="absolute inset-0 opacity-[0.06]">
-            <div className="absolute top-[15%] left-[10%] w-[300px] h-px bg-white" />
-            <div className="absolute top-[25%] left-[25%] w-[220px] h-px bg-white" />
-            <div className="absolute top-[40%] left-[5%] w-[420px] h-px bg-white" />
-            <div className="absolute top-[60%] left-[20%] w-[260px] h-px bg-white" />
+          <div className="absolute inset-0 opacity-[0.07]">
+            <div className="absolute top-[18%] left-[8%] w-[260px] h-px bg-white" />
+            <div className="absolute top-[43%] left-[5%] w-[360px] h-px bg-white" />
+            <div className="absolute top-[72%] left-[8%] w-[320px] h-px bg-white" />
 
-            <div className="absolute left-[20%] top-[10%] h-[280px] w-px bg-white" />
-            <div className="absolute left-[50%] top-[20%] h-[320px] w-px bg-white" />
-            <div className="absolute left-[70%] top-[15%] h-[220px] w-px bg-white" />
+            <div className="absolute left-[18%] top-[12%] h-[220px] w-px bg-white" />
+            <div className="absolute left-[50%] top-[10%] h-[260px] w-px bg-white" />
+            <div className="absolute left-[76%] top-[12%] h-[220px] w-px bg-white" />
           </div>
 
-          <div className="absolute left-1/2 top-1/2 w-[500px] h-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#1d4d8d] opacity-[0.08] blur-3xl" />
+          <div className="absolute left-1/2 top-1/2 w-[360px] md:w-[500px] h-[360px] md:h-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#1d4d8d] opacity-[0.10] blur-3xl" />
 
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-8">
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-5 md:px-8">
             <div className="w-full max-w-md">
-              <p className="text-[11px] md:text-[12px] tracking-[5px] uppercase text-white/40 mb-3">
+              <p className="hidden md:block text-[11px] md:text-[12px] tracking-[5px] uppercase text-white/40 mb-3">
                 Veranda Styl
               </p>
 
-              <h2 className="text-3xl md:text-5xl font-light text-white tracking-[6px]">
+              <h2 className="text-2xl md:text-5xl font-light text-white tracking-[5px] md:tracking-[6px]">
                 PREMIUM
               </h2>
 
-              <h3 className="text-lg md:text-xl text-white/60 tracking-[4px] uppercase mt-2">
+              <h3 className="text-[12px] md:text-xl text-white/60 tracking-[4px] uppercase mt-2">
                 Outdoor Structures
               </h3>
 
-              <div className="w-full h-px bg-white/10 my-8" />
+              <div className="w-full h-px bg-white/10 my-5 md:my-8" />
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-2 md:gap-4">
                 <div>
-                  <div className="text-2xl md:text-4xl font-bold text-white">
+                  <div className="text-xl md:text-4xl font-bold text-white">
                     25+
                   </div>
-                  <div className="text-[8px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
+                  <div className="text-[7px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
                     Years
                   </div>
                 </div>
 
                 <div>
-                  <div className="text-2xl md:text-4xl font-bold text-white">
+                  <div className="text-xl md:text-4xl font-bold text-white">
                     5000+
                   </div>
-                  <div className="text-[8px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
+                  <div className="text-[7px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
                     Projects
                   </div>
                 </div>
 
                 <div>
-                  <div className="text-2xl md:text-4xl font-bold text-white">
+                  <div className="text-xl md:text-4xl font-bold text-white">
                     EU
                   </div>
-                  <div className="text-[8px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
+                  <div className="text-[7px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
                     Quality
                   </div>
                 </div>
               </div>
 
-              <div className="w-full h-px bg-white/10 my-8" />
+              <div className="hidden md:block w-full h-px bg-white/10 my-8" />
 
-              <div className="flex flex-wrap justify-center gap-2 text-[9px] md:text-[10px] uppercase tracking-[2px] text-white/50">
+              <div className="hidden md:flex flex-wrap justify-center gap-2 text-[9px] md:text-[10px] uppercase tracking-[2px] text-white/50">
                 <span>VS Solid</span>
                 <span>•</span>
                 <span>VS Bold</span>
