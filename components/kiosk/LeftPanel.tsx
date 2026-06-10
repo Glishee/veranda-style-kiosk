@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useKiosk } from '@/context/KioskContext'
 
 interface LeftPanelProps {
   imageUrls: string[]
@@ -21,7 +22,33 @@ const IMAGE_BG_POSITIONS: Record<string, string> = {
   '/products/image9.png': 'center 38%',
 }
 
+const INTRO_LABELS = {
+  pl: {
+    title: 'PREMIUM',
+    subtitle: 'KONSTRUKCJE ZEWNĘTRZNE',
+    years: 'LAT',
+    projects: 'REALIZACJI',
+    quality: 'JAKOŚĆ',
+  },
+  en: {
+    title: 'PREMIUM',
+    subtitle: 'OUTDOOR STRUCTURES',
+    years: 'YEARS',
+    projects: 'PROJECTS',
+    quality: 'QUALITY',
+  },
+  de: {
+    title: 'PREMIUM',
+    subtitle: 'AUSSENKONSTRUKTIONEN',
+    years: 'JAHRE',
+    projects: 'PROJEKTE',
+    quality: 'QUALITÄT',
+  },
+}
+
 export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps) {
+  const { state } = useKiosk()
+  const intro = INTRO_LABELS[state.lang]
   const [currentIndex, setCurrentIndex] = useState(0)
 
   useEffect(() => {
@@ -70,45 +97,35 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
 
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-5 md:px-8">
             <div className="w-full max-w-md">
-              <p className="hidden md:block text-[11px] md:text-[12px] tracking-[5px] uppercase text-white/40 mb-3">
-                Veranda Styl
-              </p>
-
               <h2 className="text-2xl md:text-5xl font-light text-white tracking-[5px] md:tracking-[6px]">
-                PREMIUM
+                {intro.title}
               </h2>
 
               <h3 className="text-[12px] md:text-xl text-white/60 tracking-[4px] uppercase mt-2">
-                Outdoor Structures
+                {intro.subtitle}
               </h3>
 
               <div className="w-full h-px bg-white/10 my-5 md:my-8" />
 
               <div className="grid grid-cols-3 gap-2 md:gap-4">
                 <div>
-                  <div className="text-xl md:text-4xl font-bold text-white">
-                    25+
-                  </div>
+                  <div className="text-xl md:text-4xl font-bold text-white">25+</div>
                   <div className="text-[7px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
-                    Years
+                    {intro.years}
                   </div>
                 </div>
 
                 <div>
-                  <div className="text-xl md:text-4xl font-bold text-white">
-                    5000+
-                  </div>
+                  <div className="text-xl md:text-4xl font-bold text-white">5000+</div>
                   <div className="text-[7px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
-                    Projects
+                    {intro.projects}
                   </div>
                 </div>
 
                 <div>
-                  <div className="text-xl md:text-4xl font-bold text-white">
-                    EU
-                  </div>
+                  <div className="text-xl md:text-4xl font-bold text-white">EU</div>
                   <div className="text-[7px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
-                    Quality
+                    {intro.quality}
                   </div>
                 </div>
               </div>
