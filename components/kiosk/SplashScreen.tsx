@@ -8,25 +8,35 @@ import type { Lang } from '@/lib/types'
 
 const LANGS: Lang[] = ['pl', 'en', 'de']
 
-const COOKIE_LABELS: Record<Lang, {
-  title: string
-  body: string
-  accept: string
-}> = {
+const PRIVACY_POLICY_URL =
+  'https://firebasestorage.googleapis.com/v0/b/syncterra-58004.firebasestorage.app/o/OUR%20PDF%2FPolityka_Prywatnosci_SyncTerra%20(2).pdf?alt=media&token=4f65c7ea-a2e1-4297-b2a6-322baa94c27a'
+
+const COOKIE_LABELS: Record<
+  Lang,
+  {
+    title: string
+    body: string
+    accept: string
+    privacy: string
+  }
+> = {
   pl: {
     title: 'Prywatność i pliki cookies',
     body: 'Korzystając z konfiguratora, akceptujesz użycie niezbędnych plików cookies oraz przetwarzanie danych formularza w celu przygotowania oferty.',
     accept: 'Akceptuję',
+    privacy: 'Polityka prywatności',
   },
   en: {
     title: 'Privacy and cookies',
     body: 'By using this configurator, you accept essential cookies and the processing of form data to prepare your offer.',
     accept: 'I accept',
+    privacy: 'Privacy Policy',
   },
   de: {
     title: 'Datenschutz und Cookies',
     body: 'Durch die Nutzung dieses Konfigurators akzeptieren Sie notwendige Cookies und die Verarbeitung der Formulardaten zur Angebotserstellung.',
     accept: 'Akzeptieren',
+    privacy: 'Datenschutzerklärung',
   },
 }
 
@@ -128,6 +138,16 @@ export function SplashScreen() {
                 <p className="text-[10px] md:text-[11px] leading-relaxed text-white/40">
                   {cookie.body}
                 </p>
+
+                <a
+                  href={PRIVACY_POLICY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="mt-3 inline-block text-[10px] md:text-[11px] text-white/70 underline underline-offset-4 hover:text-white transition-colors"
+                >
+                  {cookie.privacy}
+                </a>
               </div>
             </div>
 
