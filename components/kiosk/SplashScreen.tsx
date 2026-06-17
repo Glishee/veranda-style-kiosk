@@ -18,6 +18,7 @@ const COOKIE_LABELS: Record<
     body: string
     accept: string
     privacy: string
+    rights: string
   }
 > = {
   pl: {
@@ -25,18 +26,21 @@ const COOKIE_LABELS: Record<
     body: 'Korzystając z konfiguratora, akceptujesz użycie niezbędnych plików cookies oraz przetwarzanie danych formularza w celu przygotowania oferty.',
     accept: 'Akceptuję',
     privacy: 'Polityka prywatności',
+    rights: 'Wszelkie prawa zastrzeżone.',
   },
   en: {
     title: 'Privacy and cookies',
     body: 'By using this configurator, you accept essential cookies and the processing of form data to prepare your offer.',
     accept: 'I accept',
     privacy: 'Privacy Policy',
+    rights: 'All rights reserved.',
   },
   de: {
     title: 'Datenschutz und Cookies',
     body: 'Durch die Nutzung dieses Konfigurators akzeptieren Sie notwendige Cookies und die Verarbeitung der Formulardaten zur Angebotserstellung.',
     accept: 'Akzeptieren',
     privacy: 'Datenschutzerklärung',
+    rights: 'Alle Rechte vorbehalten.',
   },
 }
 
@@ -69,7 +73,6 @@ export function SplashScreen() {
         <div className="absolute left-1/2 top-1/2 h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/20" />
       </div>
 
-      {/* Language switcher */}
       <div
         className="absolute top-4 right-4 flex gap-2 z-20"
         onClick={(e) => e.stopPropagation()}
@@ -88,7 +91,6 @@ export function SplashScreen() {
         ))}
       </div>
 
-      {/* Logo + welcome */}
       <div className="relative z-10 flex flex-col items-center text-center px-8">
         <div className="mb-8">
           <Image
@@ -161,6 +163,26 @@ export function SplashScreen() {
           </div>
         )}
       </div>
+
+      <footer
+        className="absolute bottom-4 left-1/2 z-10 w-full max-w-[960px] -translate-x-1/2 px-6 text-center"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mx-auto border-t border-white/10 pt-4 text-[9px] md:text-[10px] leading-relaxed tracking-[1px] text-white/30">
+          <p className="font-semibold text-white/45">
+            SyncTerra Sp. z o.o. © 2026. {cookie.rights}
+          </p>
+
+          <p className="mt-1">
+            SYNCTERRA SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ · NIP:
+            5273156287 · REGON: 541183846 · KRS: 0001161896
+          </p>
+
+          <p className="mt-1">
+            ul. Juliana Smulikowskiego 4A/21, 00-389 Warszawa, Polska
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }
