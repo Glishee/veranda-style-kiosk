@@ -395,17 +395,17 @@ const PRODUCTS: Array<{
       imageUrl: '/products/image14.png',
       translations: {
         pl: {
-          name: 'VS Ochrona przeciwsłoneczna',
+          name: 'Ochrona przeciwsłoneczna',
           description:
             'Zewnętrzne żaluzje fasadowe chroniące przed nadmiernym nasłonecznieniem. Redukują nagrzewanie pomieszczeń i obniżają koszty klimatyzacji. Dostępne w wersjach ręcznych i elektrycznych. Szerokie możliwości personalizacji koloru i materiału.',
         },
         en: {
-          name: 'VS Sun Shading',
+          name: 'Sun Shading',
           description:
             'External facade shading systems that protect interiors from excessive sunlight. They reduce room overheating and help lower air-conditioning costs. Available in manual and electric versions. Wide options for colour and fabric personalisation.',
         },
         de: {
-          name: 'VS Sonnenschutz',
+          name: 'Sonnenschutz',
           description:
             'Außenliegende Fassaden-Sonnenschutzsysteme zum Schutz vor übermäßiger Sonneneinstrahlung. Sie reduzieren die Aufheizung von Räumen und senken Klimatisierungskosten. In manueller und elektrischer Ausführung erhältlich. Große Auswahl an Farben und Materialien.',
         },
@@ -418,17 +418,17 @@ const PRODUCTS: Array<{
       imageUrl: '/products/image15.png',
       translations: {
         pl: {
-          name: 'VS Markiza poddachowa',
+          name: 'Markiza poddachowa',
           description:
             'Markizy podpergolowe montowane pod dachem lamellowym lub szklanym. Zapewniają cień bez konieczności zamykania dachu. Tkaniny odporne na UV i opady deszczu. Napęd elektryczny z automatyką pogodową.',
         },
         en: {
-          name: 'VS Under-Roof Shading',
+          name: 'Under-Roof Shading',
           description:
             'Under-roof awnings installed beneath louvered or glass roofs. They provide shade without closing the roof. UV- and rain-resistant fabrics. Electric drive with optional weather automation.',
         },
         de: {
-          name: 'VS Unterdachbeschattung',
+          name: 'Unterdachbeschattung',
           description:
             'Unterdachmarkisen für Lamellen- oder Glasdächer. Sie spenden Schatten, ohne das Dach schließen zu müssen. UV- und regenbeständige Stoffe. Elektrischer Antrieb mit optionaler Wetterautomatik.',
         },
