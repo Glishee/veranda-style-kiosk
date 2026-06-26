@@ -27,6 +27,27 @@ interface Props {
   categories: CategoryRow[]
 }
 
+function isValidName(value: string) {
+  return /^[A-Za-zÀ-žĄĆĘŁŃÓŚŹŻąćęłńóśźż\s'-]{2,}$/.test(value.trim())
+}
+
+function isValidCity(value: string) {
+  return /^[A-Za-zÀ-žĄĆĘŁŃÓŚŹŻąćęłńóśźż\s'-]{2,}$/.test(value.trim())
+}
+
+function isValidPhone(value: string) {
+  return /^\+48\d{9}$/.test(value.trim())
+}
+
+function isValidPostcode(value: string) {
+  return /^\d{2}-\d{3}$/.test(value.trim())
+}
+
+function isValidEmail(value?: string) {
+  if (!value) return true
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())
+}
+
 export default function KioskClient({ categories }: Props) {
   const { state, dispatch, resetTimer } = useKiosk()
   const t = useT()
@@ -94,6 +115,15 @@ export default function KioskClient({ categories }: Props) {
         ? selectedCategory.translations[state.lang]?.name
         : undefined
 
+  const contact = state.contact as typeof state.contact & { email?: string }
+
+  const isContactValid =
+    isValidName(contact.name) &&
+    isValidPhone(contact.phone) &&
+    isValidCity(contact.city) &&
+    isValidPostcode(contact.postcode) &&
+    isValidEmail(contact.email)
+
   function handleTopCategoryClick(slug: string) {
     resetTimer()
     dispatch({ type: 'SET_CATEGORY', slug })
@@ -107,9 +137,9 @@ export default function KioskClient({ categories }: Props) {
   async function handleSubmit() {
     if (!state.categorySlug || !state.productSlug) return
     if (!state.captchaVerified) return
+    if (!isContactValid) return
 
-    const { name, phone, city, postcode, comment } = state.contact
-    if (!name || !phone || !city || !postcode) return
+    const { name, phone, city, postcode, comment, email } = contact
 
     setSubmitting(true)
     resetTimer()
@@ -121,10 +151,11 @@ export default function KioskClient({ categories }: Props) {
         body: JSON.stringify({
           categorySlug: state.categorySlug,
           productSlug: state.productSlug,
-          name,
-          phone,
-          city,
-          postcode,
+          name: name.trim(),
+          phone: phone.trim(),
+          city: city.trim(),
+          postcode: postcode.trim(),
+          email: email?.trim() || undefined,
           comment: comment || undefined,
           lang: state.lang,
         }),
@@ -144,10 +175,7 @@ export default function KioskClient({ categories }: Props) {
 
   const isSubmitDisabled =
     submitting ||
-    !state.contact.name ||
-    !state.contact.phone ||
-    !state.contact.city ||
-    !state.contact.postcode ||
+    !isContactValid ||
     !state.captchaVerified
 
   const logoImg = (

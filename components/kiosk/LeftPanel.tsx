@@ -110,7 +110,7 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
               <div className="grid grid-cols-3 gap-2 md:gap-4">
                 <div className="group">
                   <div className="text-xl md:text-4xl font-bold text-white transition-all duration-700 animate-[pulse_3.8s_ease-in-out_infinite]">
-                    25+
+                    5+
                   </div>
                   <div className="text-[7px] md:text-[10px] tracking-[2px] uppercase text-white/40 mt-1">
                     {intro.years}
