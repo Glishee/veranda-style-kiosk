@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type MouseEvent } from 'react'
 import { useKiosk } from '@/context/KioskContext'
 
 interface LeftPanelProps {
@@ -47,7 +47,7 @@ const INTRO_LABELS = {
 }
 
 export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps) {
-  const { state } = useKiosk()
+  const { state, resetTimer } = useKiosk()
   const intro = INTRO_LABELS[state.lang]
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -66,9 +66,48 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
   }, [imageUrls.length])
 
   const hasImages = imageUrls.length > 0
+  const canNavigateImages = imageUrls.length > 1
+
+  function showPreviousImage() {
+    if (!canNavigateImages) return
+    resetTimer()
+    setCurrentIndex((i) => (i - 1 + imageUrls.length) % imageUrls.length)
+  }
+
+  function showNextImage() {
+    if (!canNavigateImages) return
+    resetTimer()
+    setCurrentIndex((i) => (i + 1) % imageUrls.length)
+  }
+
+  function showImage(index: number) {
+    if (!canNavigateImages) return
+    resetTimer()
+    setCurrentIndex(index)
+  }
+
+  function handleImageClick(e: MouseEvent<HTMLDivElement>) {
+    if (!canNavigateImages) return
+
+    const target = e.target as HTMLElement
+
+    if (target.closest('[data-slider-dot="true"]')) return
+
+    const rect = e.currentTarget.getBoundingClientRect()
+    const clickX = e.clientX - rect.left
+
+    if (clickX < rect.width / 2) {
+      showPreviousImage()
+    } else {
+      showNextImage()
+    }
+  }
 
   return (
-    <div className="relative w-full h-56 md:h-full md:w-[58%] md:flex-shrink-0 flex flex-col justify-end overflow-hidden bg-[#080c12]">
+    <div
+      className="relative w-full h-56 md:h-full md:w-[58%] md:flex-shrink-0 flex flex-col justify-end overflow-hidden bg-[#080c12]"
+      onClick={handleImageClick}
+    >
       {hasImages ? (
         imageUrls.map((url, i) => (
           <div
@@ -108,7 +147,7 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
               <div className="w-full h-px bg-white/10 my-5 md:my-8" />
 
               <div className="grid grid-cols-3 gap-2 md:gap-4">
-                <div className="group">
+                <div>
                   <div className="text-xl md:text-4xl font-bold text-white transition-all duration-700 animate-[pulse_3.8s_ease-in-out_infinite]">
                     5+
                   </div>
@@ -117,7 +156,7 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
                   </div>
                 </div>
 
-                <div className="group">
+                <div>
                   <div className="text-xl md:text-4xl font-bold text-white transition-all duration-700 animate-[pulse_4.4s_ease-in-out_infinite]">
                     5000+
                   </div>
@@ -126,7 +165,7 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
                   </div>
                 </div>
 
-                <div className="group">
+                <div>
                   <div className="text-xl md:text-4xl font-bold text-white transition-all duration-700 animate-[pulse_5s_ease-in-out_infinite]">
                     EU
                   </div>
@@ -157,11 +196,11 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
       )}
 
       {hasImages && (
-        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/85 to-transparent" />
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/85 to-transparent" />
       )}
 
       {hasImages && (
-        <div className="relative z-10 p-4 md:p-6">
+        <div className="relative z-20 p-4 md:p-6">
           {sublabel && (
             <p className="hidden md:block text-[8px] tracking-[3px] uppercase text-white/40 mb-1">
               {sublabel}
@@ -176,15 +215,22 @@ export default function LeftPanel({ imageUrls, label, sublabel }: LeftPanelProps
             Premium Outdoor Structures · Poland
           </p>
 
-          {imageUrls.length > 1 && (
-            <div className="flex items-center gap-1.5 mt-2 md:mt-3">
+          {canNavigateImages && (
+            <div className="flex items-center gap-2 mt-2 md:mt-3">
               {imageUrls.map((_, i) => (
-                <div
+                <button
                   key={i}
+                  type="button"
+                  data-slider-dot="true"
+                  aria-label={`Show image ${i + 1}`}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    showImage(i)
+                  }}
                   className="rounded-full transition-all duration-500"
                   style={{
-                    width: '7px',
-                    height: '7px',
+                    width: i === currentIndex ? '9px' : '7px',
+                    height: i === currentIndex ? '9px' : '7px',
                     backgroundColor:
                       i === currentIndex
                         ? 'rgba(255,255,255,0.95)'

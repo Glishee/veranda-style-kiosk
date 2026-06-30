@@ -11,7 +11,7 @@ model Category {
   id           String    @id @default(cuid())
   slug         String    @unique
   order        Int
-  translations Json      // { pl: { name }, en: { name }, de: { name } }
+  translations Json
   products     Product[]
 }
 
@@ -21,7 +21,7 @@ model Product {
   order        Int
   categoryId   String
   category     Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  translations Json     // { pl: { name, description }, en: { name, description }, de: { name, description } }
+  translations Json
   imageUrl     String
 }
 
@@ -32,8 +32,10 @@ model Lead {
   productSlug  String
   name         String
   phone        String
+  email        String?
   city         String
   postcode     String
   comment      String?
+  photoUrl     String?
   lang         String   @default("pl")
 }

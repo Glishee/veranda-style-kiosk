@@ -8,9 +8,11 @@ const LeadSchema = z.object({
   productSlug: z.string().min(1),
   name: z.string().min(1),
   phone: z.string().min(1),
+  email: z.string().email().optional(),
   city: z.string().min(1),
   postcode: z.string().min(1),
   comment: z.string().optional(),
+  photoUrl: z.string().url().optional(),
   lang: z.enum(['pl', 'en', 'de']).default('pl'),
 })
 
@@ -22,10 +24,32 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 })
   }
 
-  const { categorySlug, productSlug, name, phone, city, postcode, comment, lang } = parsed.data
+  const {
+    categorySlug,
+    productSlug,
+    name,
+    phone,
+    email,
+    city,
+    postcode,
+    comment,
+    photoUrl,
+    lang,
+  } = parsed.data
 
   await prisma.lead.create({
-    data: { categorySlug, productSlug, name, phone, city, postcode, comment, lang },
+    data: {
+      categorySlug,
+      productSlug,
+      name,
+      phone,
+      email,
+      city,
+      postcode,
+      comment,
+      photoUrl,
+      lang,
+    },
   })
 
   const resendApiKey = process.env.RESEND_API_KEY
@@ -37,19 +61,26 @@ export async function POST(req: NextRequest) {
   }
 
   const resend = new Resend(resendApiKey)
+
   const emailResult = await resend.emails.send({
-    from: 'Veranda Style Kiosk <onboarding@resend.dev>',
+    from: 'Veranda Style <onboarding@resend.dev>',
     to: notificationEmail,
     subject: `Zapytanie — ${productSlug} — ${name} — ${city}`,
     html: `
-      <h2>Nowe zapytanie z kiosku</h2>
+      <h2>Nowe zapytanie z konfiguratora</h2>
+
       <p><strong>Kategoria:</strong> ${categorySlug}</p>
       <p><strong>Produkt:</strong> ${productSlug}</p>
       <p><strong>Imię i nazwisko:</strong> ${name}</p>
       <p><strong>Telefon:</strong> ${phone}</p>
+      ${email ? `<p><strong>Email:</strong> ${email}</p>` : ''}
       <p><strong>Miasto:</strong> ${city}</p>
       <p><strong>Kod pocztowy:</strong> ${postcode}</p>
       ${comment ? `<p><strong>Konfiguracja / cena:</strong> ${comment}</p>` : ''}
+      ${photoUrl
+        ? `<p><strong>Zdjęcie miejsca montażu:</strong><br/><a href="${photoUrl}" target="_blank">${photoUrl}</a></p>`
+        : ''
+      }
       <p><strong>Język:</strong> ${lang}</p>
     `,
   })

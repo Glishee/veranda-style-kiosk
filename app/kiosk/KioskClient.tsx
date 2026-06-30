@@ -80,8 +80,6 @@ export default function KioskClient({ categories }: Props) {
   const selectedProduct =
     selectedCategory?.products.find((p) => p.slug === state.productSlug) ?? null
 
-  const firstProductOfCategory = selectedCategory?.products[0] ?? null
-
   const previewCategory =
     state.step === 1
       ? displayCategories.find((c) => c.slug === previewCategorySlug) ?? null
@@ -93,8 +91,10 @@ export default function KioskClient({ categories }: Props) {
     panelImageUrls = previewCategory.products
       .slice(0, MAX_GALLERY_IMAGES)
       .map((p) => p.imageUrl)
-  } else if (state.step === 2 && firstProductOfCategory) {
-    panelImageUrls = [firstProductOfCategory.imageUrl]
+  } else if (state.step === 2 && selectedCategory) {
+    panelImageUrls = selectedCategory.products
+      .slice(0, MAX_GALLERY_IMAGES)
+      .map((p) => p.imageUrl)
   } else if (state.step >= 3 && selectedProduct) {
     panelImageUrls = [selectedProduct.imageUrl]
   }
@@ -115,7 +115,10 @@ export default function KioskClient({ categories }: Props) {
         ? selectedCategory.translations[state.lang]?.name
         : undefined
 
-  const contact = state.contact as typeof state.contact & { email?: string }
+  const contact = state.contact as typeof state.contact & {
+    email?: string
+    photoUrl?: string
+  }
 
   const isContactValid =
     isValidName(contact.name) &&
@@ -123,6 +126,11 @@ export default function KioskClient({ categories }: Props) {
     isValidCity(contact.city) &&
     isValidPostcode(contact.postcode) &&
     isValidEmail(contact.email)
+
+  function handleLogoClick() {
+    resetTimer()
+    dispatch({ type: 'RESET' })
+  }
 
   function handleTopCategoryClick(slug: string) {
     resetTimer()
@@ -139,7 +147,7 @@ export default function KioskClient({ categories }: Props) {
     if (!state.captchaVerified) return
     if (!isContactValid) return
 
-    const { name, phone, city, postcode, comment, email } = contact
+    const { name, phone, city, postcode, comment, email, photoUrl } = contact
 
     setSubmitting(true)
     resetTimer()
@@ -156,6 +164,7 @@ export default function KioskClient({ categories }: Props) {
           city: city.trim(),
           postcode: postcode.trim(),
           email: email?.trim() || undefined,
+          photoUrl: photoUrl || undefined,
           comment: comment || undefined,
           lang: state.lang,
         }),
@@ -179,14 +188,21 @@ export default function KioskClient({ categories }: Props) {
     !state.captchaVerified
 
   const logoImg = (
-    <Image
-      src="/logo.png"
-      alt="Veranda Styl"
-      width={140}
-      height={74}
-      className="object-contain"
-      style={{ height: '42px', width: 'auto' }}
-    />
+    <button
+      type="button"
+      onClick={handleLogoClick}
+      className="flex items-center justify-center active:scale-[0.97] transition-all"
+      aria-label="Powrót do strony głównej"
+    >
+      <Image
+        src="/logo.png"
+        alt="Veranda Styl"
+        width={140}
+        height={74}
+        className="object-contain"
+        style={{ height: '42px', width: 'auto' }}
+      />
+    </button>
   )
 
   const langSwitcher = (
