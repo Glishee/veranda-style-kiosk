@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { Resend } from 'resend'
-import { prisma } from '@/lib/prisma'
 
 const LeadSchema = z.object({
   categorySlug: z.string().min(1),
@@ -37,23 +36,13 @@ export async function POST(req: NextRequest) {
     lang,
   } = parsed.data
 
-  await prisma.lead.create({
-    data: {
-      categorySlug,
-      productSlug,
-      name,
-      phone,
-      email,
-      city,
-      postcode,
-      comment,
-      photoUrl,
-      lang,
-    },
-  })
+  // ====== ВРЕМЕННО ОТКЛЮЧАЕМ PRISMA ======
+  console.log('[leads] Prisma skipped for diagnostics')
+  // ======================================
 
   const resendApiKey = process.env.RESEND_API_KEY
-  const notificationEmail = process.env.NOTIFICATION_EMAIL ?? 'oferty@syncterra.pl'
+  const notificationEmail =
+    process.env.NOTIFICATION_EMAIL ?? 'oferty@syncterra.pl'
 
   if (!resendApiKey) {
     console.error('[leads] RESEND_API_KEY is missing')
