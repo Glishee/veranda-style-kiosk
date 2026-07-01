@@ -57,7 +57,14 @@ export async function POST(req: NextRequest) {
 
   if (!resendApiKey) {
     console.error('[leads] RESEND_API_KEY is missing')
-    return NextResponse.json({ ok: true }, { status: 201 })
+
+    return NextResponse.json(
+      {
+        ok: false,
+        error: 'RESEND_API_KEY is missing',
+      },
+      { status: 500 }
+    )
   }
 
   const resend = new Resend(resendApiKey)
@@ -85,11 +92,21 @@ export async function POST(req: NextRequest) {
     `,
   })
 
+  console.log('[leads] Resend result:', emailResult)
+
   if (emailResult.error) {
     console.error('[leads] Resend error:', emailResult.error)
-  } else {
-    console.log('[leads] Email sent:', emailResult.data?.id)
+
+    return NextResponse.json(
+      {
+        ok: false,
+        resendError: emailResult.error,
+      },
+      { status: 500 }
+    )
   }
+
+  console.log('[leads] Email sent:', emailResult.data?.id)
 
   return NextResponse.json({ ok: true }, { status: 201 })
 }
